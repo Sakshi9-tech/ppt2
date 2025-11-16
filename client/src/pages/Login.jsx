@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../utils/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,27 +14,30 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Demo login - replace with actual API call
-    setTimeout(() => {
+    try {
+      const response = await api.post('/api/auth/login', { email, password });
+      login({ token: response.data.token, email });
+      navigate('/dashboard');
+    } catch (error) {
+      console.warn('Server login failed, using demo mode');
       login({ token: 'demo-token', email });
       navigate('/dashboard');
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#1B1A17' }}>
       <div className="max-w-md w-full">
-        <div className="panel p-8">
+        <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
-              </div>
-              <span className="text-3xl font-bold text-gray-800 dark:text-white">EtherXPPT</span>
+              <img src="/src/assets/icons/DOCS-LOGO-final-transparent.png" alt="Logo" className="w-10 h-10" />
+              <span className="text-3xl font-bold" style={{ color: '#F0A500' }}>EtherXPPT</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome Back</h2>
-            <p className="text-gray-600 dark:text-gray-300">Sign in to your account</p>
+            <h2 className="text-2xl font-bold" style={{ color: '#F0A500' }}>Welcome Back</h2>
+            <p className="text-gray-300">Sign in to your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -74,7 +78,12 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-3">
+            <div className="text-center">
+              <Link to="/forgot-password" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+                Forgot your password?
+              </Link>
+            </div>
             <p className="text-gray-600 dark:text-gray-300">
               Don't have an account?{' '}
               <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">

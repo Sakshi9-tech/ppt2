@@ -5,8 +5,13 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import connectDB from './config/database.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
+
+// Connect to database
+connectDB();
 
 const app = express();
 const server = createServer(app);
@@ -37,7 +42,7 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Basic routes
+// Routes
 app.get('/', (req, res) => {
   res.json({ 
     message: 'EtherXPPT Server Running',
@@ -52,6 +57,38 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
+});
+
+// API Routes
+app.use('/api/auth', authRoutes);
+
+// Forgot password route (temporary)
+app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+    
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(`🔑 OTP for ${email}: ${otp}`);
+    
+    res.json({
+      message: 'OTP sent successfully to your email address',
+      email: email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
+      testOTP: otp
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to send OTP' });
+  }
+});
+
+app.post('/api/auth/verify-otp', (req, res) => {
+  res.json({ message: 'OTP verified successfully', verified: true });
+});
+
+app.post('/api/auth/reset-password', (req, res) => {
+  res.json({ message: 'Password reset successfully' });
 });
 
 // Socket.io for real-time collaboration

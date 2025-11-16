@@ -1,248 +1,160 @@
-# EtherXPPT - PowerPoint Replica Application
+# EtherXPPT - PowerPoint Replica
 
-A modern, web-based PowerPoint replica built with React and Node.js, featuring real-time collaboration, comprehensive presentation tools, and professional interface.
+A complete PowerPoint-like presentation application built with React and Node.js.
 
-## 🚀 Features
+## Features
 
-### Core Features
-- ✅ **Slide Management** - Create, delete, duplicate, and reorder slides
-- ✅ **7 Professional Layouts** - Blank, Title Only, Title & Content, Two Column, etc.
-- ✅ **Text Formatting** - 10+ fonts, sizes, colors, alignment, spacing
-- ✅ **Drawing Tools** - 8 shape types with customizable borders and fills
-- ✅ **Enhanced Charts** - 6 chart types with real-time data editing
-- ✅ **Add-ins Marketplace** - 6 powerful extensions (Word Cloud, Icons, QR codes, etc.)
+- 🎨 **Modern UI** - Dark theme with custom colors (#1B1A17 background, #F0A500 accents)
+- 🔐 **Authentication** - Login, signup, and OTP-based password reset
+- 📧 **Email Integration** - Gmail SMTP for OTP delivery
+- 🎯 **Slide Management** - Create, edit, and organize presentation slides
+- 🖼️ **Rich Editor** - Text formatting, drawing tools, and layout options
+- 📊 **Charts & Graphics** - Multiple chart types and drawing capabilities
+- 🎭 **Slideshow Mode** - Full-screen presentation view
+- 💾 **Auto-save** - Automatic saving of presentations
+- 📱 **Responsive Design** - Works on desktop and mobile devices
 
-### Advanced Features
-- ✅ **Export Options** - PDF, PPTX, and image formats
-- ✅ **Full-screen Slideshow** - Professional presentation mode
-- ✅ **Dark/Light Theme** - Complete theme system
-- ✅ **Keyboard Shortcuts** - Professional shortcuts (Ctrl+Shift+N, F5, etc.)
-- ✅ **Auto-save** - Every 30 seconds
-- ✅ **Undo/Redo** - 50-step history
-- ✅ **Responsive Design** - Works on desktop and mobile
-
-## 🛠️ Technology Stack
+## Tech Stack
 
 ### Frontend
-- **React 18.2.0** - UI framework
-- **Vite 4.4.5** - Build tool and dev server
-- **Tailwind CSS 3.3.0** - Utility-first CSS framework
-- **React Router DOM 6.15.0** - Client-side routing
-- **pptxgenjs 3.12.0** - PowerPoint export functionality
+- React 18
+- React Router DOM
+- Axios for API calls
+- Tailwind CSS for styling
+- Vite for build tooling
 
 ### Backend
-- **Node.js** - Runtime environment
-- **Express.js 4.18.2** - Web framework
-- **Socket.io 4.7.2** - Real-time communication
-- **MongoDB/Mongoose 7.5.0** - Database and ODM
-- **JWT** - Authentication
+- Node.js with Express
+- JWT authentication
+- Nodemailer for email services
+- bcryptjs for password hashing
+- Rate limiting and security middleware
 
-## 📦 Installation & Setup
+## Getting Started
 
 ### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+- Gmail account for SMTP (optional)
+
+### Installation
+
+1. Clone the repository:
 ```bash
-Node.js >= 18.0.0
-npm >= 8.0.0
+git clone https://github.com/Gella-Uday-kumar/Ether-x-ppt.git
+cd Ether-x-ppt
 ```
 
-### Quick Start
+2. Install dependencies:
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd etherxppt-organized
-
-# Install all dependencies
 npm run install-all
-
-# Start development servers
-npm run dev
 ```
 
-### Manual Setup
+3. Configure environment variables:
 ```bash
-# Install root dependencies
-npm install
+# In server/.env
+PORT=3000
+CLIENT_URL=http://localhost:5173
+JWT_SECRET=your_jwt_secret
+EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASS=your_app_password
+```
 
-# Setup client
-cd client
-npm install
-cd ..
-
-# Setup server
-cd server
-npm install
-cd ..
-
-# Start both servers
+4. Start the application:
+```bash
 npm run dev
 ```
 
-## 🎯 Usage
+The application will be available at:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:3000
 
-1. **Access the Application**
-   - Open http://localhost:5173 in your browser
-   - Sign up or login to access the editor
+## Project Structure
 
-2. **Create Presentations**
-   - Use the toolbar to add new slides
-   - Select layouts from the Layout panel
-   - Format text using the Format panel
-   - Draw shapes with the Drawing Tools
-   - Insert charts and add-ins
-
-3. **Export & Share**
-   - Export to PPTX, PDF, or print
-   - Start slideshow with F5
-   - Use keyboard shortcuts for efficiency
-
-## 🎨 Key Components
-
-### Main Components
-- **Dashboard** - Main presentation editor
-- **Toolbar** - Primary action buttons
-- **Sidebar** - Slide thumbnails and navigation
-- **SlideEditor** - Main editing canvas
-- **LayoutSelector** - 7 professional layouts
-- **FormatPanel** - Text formatting controls
-- **DrawingTools** - Shape creation tools
-- **EnhancedChartComponent** - 6 chart types
-- **AddInsPanel** - Extensions marketplace
-- **SlideShow** - Full-screen presentation mode
-
-### Context Providers
-- **AuthContext** - User authentication
-- **ThemeContext** - Dark/light theme switching
-- **PresentationContext** - Slide management and state
-
-## ⌨️ Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Shift+N` | New Slide |
-| `Ctrl+Z` | Undo |
-| `Ctrl+Y` | Redo |
-| `Ctrl+C` | Copy |
-| `Ctrl+V` | Paste |
-| `Ctrl+S` | Save |
-| `F5` | Start Slideshow |
-| `Escape` | Exit Slideshow |
-| `←/→` | Navigate Slides |
-
-## 📊 Export Formats
-
-### PPTX Export
-- Full PowerPoint compatibility
-- Preserves layouts and formatting
-- Supports text, shapes, and basic charts
-
-### PDF Export
-- High-quality PDF generation
-- Maintains slide layouts
-- Perfect for sharing and printing
-
-### Image Export
-- PNG format with high resolution
-- Individual slide export
-- Great for web use and thumbnails
-
-## 🧩 Add-ins Marketplace
-
-### Available Extensions
-1. **Word Cloud Generator** - Create beautiful word clouds
-2. **Professional Icons Pack** - 1000+ professional icons
-3. **QR Code Generator** - Generate QR codes for links
-4. **Math Equations** - Insert complex mathematical equations
-5. **Interactive Maps** - Embed maps and locations
-6. **Social Media Pack** - Embed social media content
-
-## 🎨 Layouts & Templates
-
-### 7 Professional Layouts
-1. **Blank** - Empty slide for custom content
-2. **Title Only** - Large title area
-3. **Title & Content** - Most common layout
-4. **Two Column** - Side-by-side content areas
-5. **Title + Two Content** - Title with dual content
-6. **Section Header** - Large section divider
-7. **Comparison** - A vs B comparison layout
-
-## 🔧 Development
-
-### Project Structure
 ```
 etherxppt-organized/
 ├── client/                 # React frontend
 │   ├── src/
-│   │   ├── components/     # UI components
+│   │   ├── components/     # Reusable components
 │   │   ├── contexts/       # React contexts
 │   │   ├── pages/          # Page components
+│   │   ├── styles/         # CSS and theme files
 │   │   └── utils/          # Utility functions
+│   └── public/             # Static assets
 ├── server/                 # Node.js backend
-│   ├── src/
-│   │   ├── controllers/    # Route controllers
-│   │   ├── models/         # Database models
-│   │   └── routes/         # API routes
-└── docs/                   # Documentation
+│   ├── production-server.js # Main server file
+│   ├── .env               # Environment variables
+│   └── test-otp.js        # OTP testing utility
+└── docs/                  # Documentation
 ```
+
+## Features Overview
+
+### Authentication System
+- User registration and login
+- JWT-based session management
+- OTP-based password reset via email
+- Rate limiting for security
+
+### Presentation Editor
+- Slide creation and management
+- Text formatting and styling
+- Drawing tools and shapes
+- Chart integration
+- Layout templates
+- Auto-save functionality
+
+### Email Integration
+- Professional HTML email templates
+- OTP delivery for password reset
+- Gmail SMTP integration
+- Security notifications
+
+## Development
 
 ### Available Scripts
+
 ```bash
-npm run dev          # Start both client and server
-npm run client       # Start only client
-npm run server       # Start only server
-npm run build        # Build for production
-npm run install-all  # Install all dependencies
+# Start development servers
+npm run dev
+
+# Start only client
+npm run client
+
+# Start only server
+npm run server
+
+# Build for production
+npm run build
+
+# Install all dependencies
+npm run install-all
 ```
 
-## 🌟 Features in Detail
+### Testing OTP Functionality
 
-### Slide Management
-- Create unlimited slides
-- Drag and drop reordering
-- Duplicate slides with one click
-- Reset slides to clean state
-- Navigate with arrow keys
+```bash
+cd server
+node test-otp.js
+```
 
-### Text Formatting
-- 10+ professional fonts
-- Font sizes from 8pt to 72pt
-- Bold, italic, underline styles
-- Color picker with quick colors
-- Text alignment options
-- Line spacing controls
-- Letter spacing adjustment
+## Deployment
 
-### Drawing Tools
-- 8 shape types (rectangle, circle, triangle, etc.)
-- Customizable border width and color
-- Fill colors with transparency
-- Quick color palette
-- Real-time preview
-
-### Chart System
-- 6 chart types (bar, line, pie, doughnut, area, scatter)
-- JSON-based data editing
-- Real-time chart updates
-- Custom colors and styling
-- Export-ready charts
-
-## 🚀 Deployment
-
-### Frontend Deployment
+1. Build the client:
 ```bash
 cd client
 npm run build
-# Deploy dist/ folder to static hosting
 ```
 
-### Backend Deployment
+2. Configure production environment variables
+
+3. Start the production server:
 ```bash
 cd server
-# Set environment variables
 npm start
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -250,17 +162,14 @@ npm start
 4. Test thoroughly
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
-## 🆘 Support
+## Support
 
-For support and questions:
-- Create an issue on GitHub
-- Check the documentation
-- Review the code examples
+For support and questions, please open an issue on GitHub.
 
 ---
 
-**EtherXPPT v2.0.0** - Professional presentation software for modern teams.
+Built with ❤️ by Gella Uday Kumar

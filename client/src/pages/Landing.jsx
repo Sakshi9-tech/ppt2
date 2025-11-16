@@ -6,25 +6,23 @@ const Landing = () => {
   const { isDark, toggleTheme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen" style={{ backgroundColor: '#1B1A17' }}>
       {/* Header */}
       <header className="container mx-auto px-6 py-4">
         <nav className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">E</span>
-            </div>
-            <span className="text-2xl font-bold text-gray-800 dark:text-white">EtherXPPT</span>
+            <img src="/src/assets/icons/DOCS-LOGO-final-transparent.png" alt="Logo" className="w-8 h-8" />
+            <span className="text-2xl font-bold" style={{ color: '#F0A500' }}>EtherXPPT</span>
           </div>
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300"
             >
               {isDark ? '☀️' : '🌙'}
             </button>
-            <Link to="/login" className="btn-secondary">Login</Link>
-            <Link to="/signup" className="btn-primary">Sign Up</Link>
+            <Link to="/login" className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors">Login</Link>
+            <Link to="/signup" className="px-4 py-2 rounded text-black hover:opacity-90 transition-colors" style={{ backgroundColor: '#F0A500' }}>Sign Up</Link>
           </div>
         </nav>
       </header>
@@ -32,19 +30,19 @@ const Landing = () => {
       {/* Hero Section */}
       <main className="container mx-auto px-6 py-20">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in" style={{ color: '#F0A500' }}>
             Create Amazing
-            <span className="text-blue-600"> Presentations</span>
+            <span className="text-white"> Presentations</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-slide-in-up">
+          <p className="text-xl text-gray-300 mb-8 animate-slide-in-up">
             Professional PowerPoint-like editor with real-time collaboration, 
             advanced charts, and modern design tools.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-in">
-            <Link to="/signup" className="btn-primary text-lg px-8 py-3">
+            <Link to="/signup" className="text-lg px-8 py-3 rounded text-black hover:opacity-90 transition-colors" style={{ backgroundColor: '#F0A500' }}>
               Get Started Free
             </Link>
-            <Link to="/dashboard" className="btn-secondary text-lg px-8 py-3">
+            <Link to="/dashboard" className="text-lg px-8 py-3 rounded bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors">
               Try Demo
             </Link>
           </div>

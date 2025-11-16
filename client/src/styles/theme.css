@@ -1,0 +1,57 @@
+/* Custom Theme Colors */
+:root {
+  --primary-bg: #1B1A17;
+  --primary-text: #F0A500;
+  --secondary-text: #E5E7EB;
+  --card-bg: #374151;
+  --border-color: #4B5563;
+  --hover-bg: #4B5563;
+}
+
+/* Global theme overrides */
+.theme-bg {
+  background-color: var(--primary-bg);
+}
+
+.theme-text {
+  color: var(--primary-text);
+}
+
+.theme-text-secondary {
+  color: var(--secondary-text);
+}
+
+.theme-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.theme-button-primary {
+  background-color: var(--primary-text);
+  color: var(--primary-bg);
+}
+
+.theme-button-primary:hover {
+  opacity: 0.9;
+}
+
+.theme-button-secondary {
+  background-color: var(--card-bg);
+  color: var(--secondary-text);
+  border-color: var(--border-color);
+}
+
+.theme-button-secondary:hover {
+  background-color: var(--hover-bg);
+}
+
+.theme-input {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--secondary-text);
+}
+
+.theme-input:focus {
+  border-color: var(--primary-text);
+  box-shadow: 0 0 0 2px rgba(240, 165, 0, 0.2);
+}
