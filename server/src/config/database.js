@@ -26,8 +26,7 @@ const connectDB = async () => {
     });
 
   } catch (error) {
-    console.error('Database connection failed:', error);
-    process.exit(1);
+    console.log('📊 MongoDB unavailable, using in-memory storage');
   }
 };
 

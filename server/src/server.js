@@ -62,6 +62,46 @@ app.get('/api/health', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 
+// Import cloud routes
+import cloudRoutes from './routes/cloud.js';
+app.use('/api/cloud', cloudRoutes);
+
+// Import presentation routes
+import presentationRoutes from './routes/presentations.js';
+app.use('/api/presentations', presentationRoutes);
+
+// Import AI routes
+import aiRoutes from './routes/ai.js';
+app.use('/api/ai', aiRoutes);
+
+// Import all feature routes
+import templateRoutes from './routes/templates.js';
+import versionRoutes from './routes/versions.js';
+import uploadRoutes from './routes/upload.js';
+import chartRoutes from './routes/charts.js';
+import exportRoutes from './routes/export.js';
+import collaborationRoutes from './routes/collaboration.js';
+import searchRoutes from './routes/search.js';
+
+app.use('/api/templates', templateRoutes);
+app.use('/api/versions', versionRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/charts', chartRoutes);
+app.use('/api/export', exportRoutes);
+app.use('/api/collaboration', collaborationRoutes);
+app.use('/api/search', searchRoutes);
+
+// Import remaining feature routes
+import animationRoutes from './routes/animations.js';
+import interactiveRoutes from './routes/interactive.js';
+import notesRoutes from './routes/notes.js';
+import drawingRoutes from './routes/drawing.js';
+
+app.use('/api/animations', animationRoutes);
+app.use('/api/interactive', interactiveRoutes);
+app.use('/api/notes', notesRoutes);
+app.use('/api/drawing', drawingRoutes);
+
 // Forgot password route (temporary)
 app.post('/api/auth/forgot-password', async (req, res) => {
   try {

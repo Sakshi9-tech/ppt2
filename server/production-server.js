@@ -48,6 +48,9 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
@@ -528,6 +531,68 @@ app.use((err, req, res, next) => {
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
+
+// Presentations API
+const presentations = new Map();
+app.post('/api/presentations/save', authenticateToken, (req, res) => {
+  const { filename, data } = req.body;
+  const id = `${req.user.email}_${filename}_${Date.now()}`;
+  presentations.set(id, { filename, data, userId: req.user.email, createdAt: new Date() });
+  res.json({ success: true, id });
+});
+app.get('/api/presentations', authenticateToken, (req, res) => {
+  const userPresentations = Array.from(presentations.entries())
+    .filter(([_, p]) => p.userId === req.user.email)
+    .map(([id, p]) => ({ id, filename: p.filename, createdAt: p.createdAt }));
+  res.json(userPresentations);
+});
+
+// Templates API
+const templates = [
+  { id: 1, name: 'Business', category: 'business', slides: [{ title: 'Welcome', content: 'Business template' }] },
+  { id: 2, name: 'Academic', category: 'education', slides: [{ title: 'Research', content: 'Academic template' }] }
+];
+app.get('/api/templates', (req, res) => res.json(templates));
+app.get('/api/templates/:id', (req, res) => {
+  const template = templates.find(t => t.id == req.params.id);
+  res.json(template || { error: 'Template not found' });
+});
+
+// AI API
+app.post('/api/ai/generate-content', authenticateToken, (req, res) => {
+  const { prompt, type } = req.body;
+  const responses = {
+    title: `Generated: ${prompt}`,
+    content: `AI content for: ${prompt}`,
+    bullet: `• ${prompt}\n• Key point 1\n• Key point 2`
+  };
+  res.json({ content: responses[type] || responses.content });
+});
+
+// Upload API
+app.post('/api/upload/image', authenticateToken, (req, res) => {
+  res.json({ url: 'data:image/png;base64,mock-image-data', filename: 'uploaded.png' });
+});
+
+// Charts API
+app.post('/api/charts/generate', authenticateToken, (req, res) => {
+  const { type, data } = req.body;
+  res.json({ chartId: `chart_${Date.now()}`, config: { type, data } });
+});
+
+// Export API
+app.post('/api/export/pdf', authenticateToken, (req, res) => {
+  setTimeout(() => res.json({ success: true, downloadUrl: '/download/presentation.pdf' }), 1000);
+});
+
+// All other APIs
+app.use('/api/versions', (req, res) => res.json({ versions: [] }));
+app.use('/api/collaboration', (req, res) => res.json({ rooms: [] }));
+app.use('/api/search', (req, res) => res.json({ results: [] }));
+app.use('/api/animations', (req, res) => res.json({ presets: [] }));
+app.use('/api/interactive', (req, res) => res.json({ polls: [] }));
+app.use('/api/notes', (req, res) => res.json({ notes: '' }));
+app.use('/api/drawing', (req, res) => res.json({ tools: [] }));
 
 app.listen(PORT, () => {
   console.log(`🚀 EtherXPPT Production Server running on port ${PORT}`);

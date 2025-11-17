@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import Toolbar from '../components/Toolbar';
 import Sidebar from '../components/Sidebar';
 import SlideEditor from '../components/SlideEditor';
+import SpeakerNotes from '../components/SpeakerNotes';
 import LayoutSelector from '../components/LayoutSelector';
 import FormatPanel from '../components/FormatPanel';
 import DrawingTools from '../components/DrawingTools';
 import EnhancedChartComponent from '../components/EnhancedChartComponent';
 import AddInsPanel from '../components/AddInsPanel';
+import AnimationPanel from '../components/AnimationPanel';
+import PresenterMode from '../components/PresenterMode';
 import SlideShow from '../components/SlideShow';
 import KeyboardShortcuts from '../components/KeyboardShortcuts';
 import PresentationManager from '../components/PresentationManager';
 import TemplateLibrary from '../components/TemplateLibrary';
 import RecentPresentations from '../components/RecentPresentations';
 import SearchPresentations from '../components/SearchPresentations';
+import AIAssistant from '../components/AIAssistant';
+import CloudSync from '../components/CloudSync';
+import AdvancedExport from '../components/AdvancedExport';
+import InteractiveElements from '../components/InteractiveElements';
+import MobileView from '../components/MobileView';
+import VersionHistory from '../components/VersionHistory';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const [activePanel, setActivePanel] = useState(null);
@@ -26,6 +37,12 @@ const Dashboard = () => {
   const [showTemplateLibrary, setShowTemplateLibrary] = useState(false);
   const [showRecentPresentations, setShowRecentPresentations] = useState(false);
   const [showSearchPresentations, setShowSearchPresentations] = useState(false);
+  const [showPresenterMode, setShowPresenterMode] = useState(false);
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [showCloudSync, setShowCloudSync] = useState(false);
+  const [showAdvancedExport, setShowAdvancedExport] = useState(false);
+  const [showInteractiveElements, setShowInteractiveElements] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
 
   useEffect(() => {
     const handleStartSlideshow = () => setIsSlideshow(true);
@@ -52,6 +69,8 @@ const Dashboard = () => {
         return <EnhancedChartComponent />;
       case 'addins':
         return <AddInsPanel />;
+      case 'animations':
+        return <AnimationPanel />;
       default:
         return null;
     }
@@ -120,7 +139,10 @@ const Dashboard = () => {
                   </div>
                 )}
               </div>
-              <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              <button 
+                onClick={() => navigate('/')}
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+              >
                 Home
               </button>
               <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
@@ -129,7 +151,12 @@ const Dashboard = () => {
               <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
                 Design
               </button>
-              <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              <button 
+                onClick={() => setActivePanel(activePanel === 'animations' ? null : 'animations')}
+                className={`text-sm hover:text-gray-800 dark:hover:text-white ${
+                  activePanel === 'animations' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'
+                }`}
+              >
                 Animations
               </button>
               <button 
@@ -138,10 +165,50 @@ const Dashboard = () => {
               >
                 Slideshow
               </button>
+              <button 
+                onClick={() => setShowPresenterMode(true)}
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+              >
+                Presenter
+              </button>
+              <button 
+                onClick={() => setShowAIAssistant(true)}
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+              >
+                🤖 AI
+              </button>
             </nav>
           </div>
 
           <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setShowCloudSync(true)}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              title="Cloud Sync"
+            >
+              ☁️
+            </button>
+            <button
+              onClick={() => setShowAdvancedExport(true)}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              title="Advanced Export"
+            >
+              🚀
+            </button>
+            <button
+              onClick={() => setShowInteractiveElements(true)}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              title="Interactive Elements"
+            >
+              ⚡
+            </button>
+            <button
+              onClick={() => setShowVersionHistory(true)}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              title="Version History"
+            >
+              📚
+            </button>
             <button
               onClick={() => setShowSearchPresentations(true)}
               className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -185,6 +252,9 @@ const Dashboard = () => {
         {/* Right Panel */}
         {renderRightPanel()}
       </div>
+      
+      {/* Speaker Notes */}
+      <SpeakerNotes />
 
       {/* Status Bar */}
       <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-2">
@@ -206,6 +276,12 @@ const Dashboard = () => {
       <SlideShow 
         isActive={isSlideshow} 
         onExit={() => setIsSlideshow(false)} 
+      />
+      
+      {/* Presenter Mode */}
+      <PresenterMode 
+        isActive={showPresenterMode} 
+        onExit={() => setShowPresenterMode(false)} 
       />
       
       {/* Presentation Management Modals */}
@@ -233,6 +309,16 @@ const Dashboard = () => {
           onLoadPresentation={(data) => console.log('Loaded:', data)}
         />
       )}
+      
+      {/* New Feature Modals */}
+      {showAIAssistant && <AIAssistant onClose={() => setShowAIAssistant(false)} />}
+      {showCloudSync && <CloudSync onClose={() => setShowCloudSync(false)} />}
+      {showAdvancedExport && <AdvancedExport onClose={() => setShowAdvancedExport(false)} />}
+      {showInteractiveElements && <InteractiveElements onClose={() => setShowInteractiveElements(false)} />}
+      {showVersionHistory && <VersionHistory onClose={() => setShowVersionHistory(false)} />}
+      
+      {/* Mobile View */}
+      <MobileView />
     </div>
   );
 };

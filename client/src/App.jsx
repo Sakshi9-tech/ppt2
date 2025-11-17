@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { PresentationProvider } from './contexts/PresentationContext';
+import { CollaborationProvider } from './contexts/CollaborationContext';
+import { CloudProvider } from './contexts/CloudContext';
 import SplashScreen from './components/SplashScreen';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
@@ -25,8 +27,10 @@ function App() {
       {!showSplash && (
         <AuthProvider>
           <ThemeProvider>
-            <PresentationProvider>
-              <Router>
+            <CollaborationProvider>
+              <CloudProvider>
+                <PresentationProvider>
+                <Router>
                 <Routes>
                   <Route path="/" element={<Landing />} />
                   <Route path="/login" element={<Login />} />
@@ -41,8 +45,10 @@ function App() {
                     } 
                   />
                 </Routes>
-              </Router>
-            </PresentationProvider>
+                </Router>
+                </PresentationProvider>
+              </CloudProvider>
+            </CollaborationProvider>
           </ThemeProvider>
         </AuthProvider>
       )}

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { usePresentation } from '../contexts/PresentationContext';
+import ChartComponent from './ChartComponent';
+import TableComponent from './TableComponent';
 
 const SlideEditor = () => {
   const { slides, currentSlide, updateSlide } = usePresentation();
@@ -7,6 +9,8 @@ const SlideEditor = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [showChartModal, setShowChartModal] = useState(false);
+  const [showTableModal, setShowTableModal] = useState(false);
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   
@@ -176,6 +180,18 @@ const SlideEditor = () => {
           >
             📷 Image
           </label>
+          <button
+            onClick={() => setShowChartModal(true)}
+            className="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700"
+          >
+            📊 Chart
+          </button>
+          <button
+            onClick={() => setShowTableModal(true)}
+            className="px-3 py-1 text-sm bg-orange-600 text-white rounded hover:bg-orange-700"
+          >
+            📋 Table
+          </button>
         </div>
       </div>
 
@@ -291,6 +307,33 @@ const SlideEditor = () => {
                 </div>
               )}
               
+              {element.type === 'chart' && (
+                <div className="w-full h-full p-2">
+                  <div className="text-xs font-medium mb-1">{element.title}</div>
+                  <div className="w-full h-full bg-gray-100 rounded flex items-center justify-center">
+                    📊 {element.chartType.toUpperCase()} Chart
+                  </div>
+                </div>
+              )}
+              
+              {element.type === 'table' && (
+                <div className="w-full h-full overflow-hidden">
+                  <table className="w-full h-full text-xs border-collapse">
+                    <tbody>
+                      {element.data.map((row, i) => (
+                        <tr key={i}>
+                          {row.map((cell, j) => (
+                            <td key={j} className="border border-gray-300 p-1 truncate">
+                              {cell || `${i + 1},${j + 1}`}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              
               {selectedElement === element.id && (
                 <button
                   onClick={(e) => {
@@ -342,6 +385,10 @@ const SlideEditor = () => {
           </div>
         </div>
       )}
+      
+      {/* Modals */}
+      {showChartModal && <ChartComponent onClose={() => setShowChartModal(false)} />}
+      {showTableModal && <TableComponent onClose={() => setShowTableModal(false)} />}
     </div>
   );
 };
