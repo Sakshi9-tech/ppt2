@@ -1,34 +1,62 @@
 # EtherXPPT - PowerPoint Replica
 
-A complete PowerPoint-like presentation application built with React and Node.js.
+A complete PowerPoint-like presentation application built with React and Node.js. Create, edit, and manage professional presentations with advanced features including rich text editing, image support, shapes, templates, and comprehensive export options.
 
-## Features
+## ✨ Key Features
 
-- 🎨 **Modern UI** - Dark theme with custom colors (#1B1A17 background, #F0A500 accents)
-- 🔐 **Authentication** - Login, signup, and OTP-based password reset
-- 📧 **Email Integration** - Gmail SMTP for OTP delivery
-- 🎯 **Slide Management** - Create, edit, and organize presentation slides
-- 🖼️ **Rich Editor** - Text formatting, drawing tools, and layout options
-- 📊 **Charts & Graphics** - Multiple chart types and drawing capabilities
-- 🎭 **Slideshow Mode** - Full-screen presentation view
-- 💾 **Auto-save** - Automatic saving of presentations
-- 📱 **Responsive Design** - Works on desktop and mobile devices
+### 🎨 **Advanced Slide Editor**
+- **Rich Text Editing** - Bold, italic, underline, font selection, colors, alignment
+- **Dynamic Elements** - Draggable text boxes, images, shapes, and icons
+- **Image Support** - Upload and position images with drag-and-drop
+- **Shape Tools** - Rectangles, circles, triangles with customizable colors
+- **Icon Library** - Pre-built icons (star, heart, check, arrow, warning, info)
+- **Live Editing** - Real-time content editing with visual feedback
+
+### 📁 **Presentation Management**
+- **File Organization** - Custom folders (Personal, Work, Templates)
+- **Search Functionality** - Full-text search across presentations and content
+- **Recent Presentations** - Quick access to last 10 presentations
+- **Template Library** - Professional templates (Business, Education, Creative)
+- **Duplicate & Delete** - Complete file management operations
+
+### 📤 **Enhanced Export & Import**
+- **PowerPoint (.pptx)** - Full compatibility with Microsoft PowerPoint
+- **PDF Export** - High-quality PDF generation with backgrounds and formatting
+- **HTML Export** - Web-ready presentations viewable in any browser
+- **JSON Format** - Native format preserving all features
+- **Image Archive** - Export all slides as high-resolution PNG images
+- **PowerPoint Import** - Basic PPTX file import support
+
+### 🎯 **Core Features**
+- **Modern UI** - Dark theme with custom colors (#1B1A17 background, #F0A500 accents)
+- **Authentication** - Secure login, signup, and OTP-based password reset
+- **Email Integration** - Gmail SMTP for OTP delivery
+- **Slideshow Mode** - Full-screen presentation view with navigation
+- **Auto-save** - Automatic local storage backup
+- **Responsive Design** - Works on desktop and mobile devices
 
 ## Tech Stack
 
 ### Frontend
-- React 18
-- React Router DOM
-- Axios for API calls
-- Tailwind CSS for styling
-- Vite for build tooling
+- **React 18** - Modern React with hooks and context
+- **React Router DOM** - Client-side routing
+- **Tailwind CSS** - Utility-first CSS framework
+- **Vite** - Fast build tooling and development server
+- **Axios** - HTTP client for API calls
+- **html2canvas** - Screenshot generation for exports
+- **jsPDF** - PDF generation
+- **pptxgenjs** - PowerPoint file generation
+- **JSZip** - Archive creation and PPTX parsing
+- **file-saver** - File download utilities
 
 ### Backend
-- Node.js with Express
-- JWT authentication
-- Nodemailer for email services
-- bcryptjs for password hashing
-- Rate limiting and security middleware
+- **Node.js with Express** - Server framework
+- **JWT Authentication** - Secure token-based auth
+- **Nodemailer** - Email service integration
+- **bcryptjs** - Password hashing
+- **Rate limiting** - Security middleware
+- **CORS** - Cross-origin resource sharing
+- **Helmet** - Security headers
 
 ## Getting Started
 
@@ -41,8 +69,8 @@ A complete PowerPoint-like presentation application built with React and Node.js
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Gella-Uday-kumar/Ether-x-ppt.git
-cd Ether-x-ppt
+git clone https://github.com/Gella-Uday-kumar/Ether-x-ppt1.git
+cd Ether-x-ppt1
 ```
 
 2. Install dependencies:
@@ -72,43 +100,71 @@ The application will be available at:
 ## Project Structure
 
 ```
-etherxppt-organized/
-├── client/                 # React frontend
+Ether-x-ppt1/
+├── client/                     # React frontend application
 │   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── contexts/       # React contexts
-│   │   ├── pages/          # Page components
-│   │   ├── styles/         # CSS and theme files
-│   │   └── utils/          # Utility functions
-│   └── public/             # Static assets
-├── server/                 # Node.js backend
-│   ├── production-server.js # Main server file
-│   ├── .env               # Environment variables
-│   └── test-otp.js        # OTP testing utility
-└── docs/                  # Documentation
+│   │   ├── components/         # React components
+│   │   │   ├── SlideEditor.jsx     # Advanced slide editor
+│   │   │   ├── PresentationManager.jsx # File management
+│   │   │   ├── TemplateLibrary.jsx     # Template system
+│   │   │   ├── ImportExport.jsx        # Export/import features
+│   │   │   ├── FormatPanel.jsx         # Formatting controls
+│   │   │   ├── AddInsPanel.jsx         # Elements and shapes
+│   │   │   └── ...                     # Other components
+│   │   ├── contexts/           # React context providers
+│   │   │   ├── PresentationContext.jsx # Slide management
+│   │   │   ├── AuthContext.jsx         # Authentication
+│   │   │   └── ThemeContext.jsx        # Theme management
+│   │   ├── pages/              # Main application pages
+│   │   ├── utils/              # Utility functions
+│   │   │   ├── exportUtils.js          # Export/import logic
+│   │   │   └── cloudStorage.js         # Storage utilities
+│   │   └── styles/             # CSS and styling
+│   ├── public/                 # Static assets
+│   └── package.json            # Frontend dependencies
+├── server/                     # Node.js backend
+│   ├── src/                    # Server source code
+│   │   ├── controllers/        # Route controllers
+│   │   ├── middleware/         # Express middleware
+│   │   ├── models/             # Data models
+│   │   ├── routes/             # API routes
+│   │   └── services/           # Business logic
+│   ├── production-server.js    # Production server
+│   ├── .env.example           # Environment template
+│   └── package.json           # Backend dependencies
+├── package.json               # Root package configuration
+└── README.md                  # This file
 ```
 
-## Features Overview
+## 🚀 Advanced Features
 
-### Authentication System
-- User registration and login
-- JWT-based session management
-- OTP-based password reset via email
-- Rate limiting for security
+### Rich Slide Editor
+- **Content Editing** - Click-to-edit titles and content with HTML support
+- **Formatting Toolbar** - Font selection, sizes, colors, and text alignment
+- **Element Management** - Add, move, resize, and delete slide elements
+- **Visual Feedback** - Hover states, selection indicators, and drag handles
+- **Keyboard Shortcuts** - Standard shortcuts for formatting and navigation
 
-### Presentation Editor
-- Slide creation and management
-- Text formatting and styling
-- Drawing tools and shapes
-- Chart integration
-- Layout templates
-- Auto-save functionality
+### Presentation Management System
+- **Library View** - Grid-based presentation browser with thumbnails
+- **Folder Organization** - Create and manage custom folder structures
+- **Advanced Search** - Search by filename or slide content with match highlighting
+- **Template System** - Professional templates for quick presentation starts
+- **Recent Access** - Smart recent presentations with relative date display
 
-### Email Integration
-- Professional HTML email templates
-- OTP delivery for password reset
-- Gmail SMTP integration
-- Security notifications
+### Export & Import Capabilities
+- **Multi-format Export** - PPTX, PDF, HTML, JSON, and image formats
+- **Batch Operations** - Export all slides as image archive
+- **Import Support** - JSON (full features) and PPTX (basic) import
+- **Cloud Ready** - Infrastructure for future cloud storage integration
+- **Quality Control** - High-resolution exports with proper formatting
+
+### User Experience
+- **Responsive Design** - Optimized for desktop and mobile devices
+- **Dark/Light Themes** - Toggle between themes with persistent settings
+- **Progress Indicators** - Loading states for better user feedback
+- **Error Handling** - Graceful error recovery with user-friendly messages
+- **Accessibility** - Keyboard navigation and screen reader support
 
 ## Development
 
@@ -154,22 +210,59 @@ cd server
 npm start
 ```
 
-## Contributing
+## 📋 Usage Guide
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+### Creating Presentations
+1. **Start New** - Use "New Slide" or choose from templates
+2. **Add Content** - Click on title/content areas to edit
+3. **Insert Elements** - Add text boxes, images, shapes, and icons
+4. **Format** - Use formatting panel for colors, fonts, and layouts
+5. **Save** - Use quick save or presentation manager
 
-## License
+### Managing Presentations
+1. **Access Manager** - File → Manage Presentations
+2. **Organize** - Create folders and move presentations
+3. **Search** - Use global search or File → Search Presentations
+4. **Templates** - File → Template Library for quick starts
 
-This project is licensed under the MIT License.
+### Export Options
+1. **Quick Export** - Toolbar dropdown for common formats
+2. **Advanced Export** - Import/Export button for all options
+3. **Batch Export** - Export all slides as images
+4. **Format Selection** - Choose based on your needs:
+   - PPTX for PowerPoint compatibility
+   - PDF for sharing and printing
+   - HTML for web publishing
+   - JSON for backup and transfer
 
-## Support
+## 🤝 Contributing
 
-For support and questions, please open an issue on GitHub.
+1. Fork the repository from [GitHub](https://github.com/Gella-Uday-kumar/Ether-x-ppt1.git)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes and test thoroughly
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support and questions:
+- 📧 Open an issue on [GitHub](https://github.com/Gella-Uday-kumar/Ether-x-ppt1/issues)
+- 💬 Check existing issues for solutions
+- 📖 Review this README for usage guidance
+
+## 🙏 Acknowledgments
+
+- Built with modern web technologies
+- Inspired by Microsoft PowerPoint
+- Community feedback and contributions
 
 ---
 
-Built with ❤️ by Gella Uday Kumar
+**Repository**: https://github.com/Gella-Uday-kumar/Ether-x-ppt1.git
+
+Built with ❤️ by [Gella Uday Kumar](https://github.com/Gella-Uday-kumar)

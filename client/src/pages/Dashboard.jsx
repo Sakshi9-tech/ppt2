@@ -11,12 +11,21 @@ import EnhancedChartComponent from '../components/EnhancedChartComponent';
 import AddInsPanel from '../components/AddInsPanel';
 import SlideShow from '../components/SlideShow';
 import KeyboardShortcuts from '../components/KeyboardShortcuts';
+import PresentationManager from '../components/PresentationManager';
+import TemplateLibrary from '../components/TemplateLibrary';
+import RecentPresentations from '../components/RecentPresentations';
+import SearchPresentations from '../components/SearchPresentations';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const [activePanel, setActivePanel] = useState(null);
   const [isSlideshow, setIsSlideshow] = useState(false);
+  const [showFileMenu, setShowFileMenu] = useState(false);
+  const [showPresentationManager, setShowPresentationManager] = useState(false);
+  const [showTemplateLibrary, setShowTemplateLibrary] = useState(false);
+  const [showRecentPresentations, setShowRecentPresentations] = useState(false);
+  const [showSearchPresentations, setShowSearchPresentations] = useState(false);
 
   useEffect(() => {
     const handleStartSlideshow = () => setIsSlideshow(true);
@@ -63,9 +72,54 @@ const Dashboard = () => {
             
             {/* Menu Items */}
             <nav className="flex space-x-6">
-              <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
-                File
-              </button>
+              <div className="relative">
+                <button 
+                  onClick={() => setShowFileMenu(!showFileMenu)}
+                  className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                >
+                  File
+                </button>
+                {showFileMenu && (
+                  <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 w-48">
+                    <button
+                      onClick={() => {
+                        setShowPresentationManager(true);
+                        setShowFileMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      📁 Manage Presentations
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowTemplateLibrary(true);
+                        setShowFileMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      🎨 Template Library
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowRecentPresentations(true);
+                        setShowFileMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      🕰 Recent Presentations
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowSearchPresentations(true);
+                        setShowFileMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      🔍 Search Presentations
+                    </button>
+                  </div>
+                )}
+              </div>
               <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
                 Home
               </button>
@@ -88,6 +142,13 @@ const Dashboard = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setShowSearchPresentations(true)}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+              title="Search Presentations (Ctrl+F)"
+            >
+              🔍
+            </button>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -146,6 +207,32 @@ const Dashboard = () => {
         isActive={isSlideshow} 
         onExit={() => setIsSlideshow(false)} 
       />
+      
+      {/* Presentation Management Modals */}
+      {showPresentationManager && (
+        <PresentationManager 
+          onClose={() => setShowPresentationManager(false)}
+          onLoadPresentation={(data) => console.log('Loaded:', data)}
+        />
+      )}
+      
+      {showTemplateLibrary && (
+        <TemplateLibrary onClose={() => setShowTemplateLibrary(false)} />
+      )}
+      
+      {showRecentPresentations && (
+        <RecentPresentations 
+          onClose={() => setShowRecentPresentations(false)}
+          onLoadPresentation={(data) => console.log('Loaded:', data)}
+        />
+      )}
+      
+      {showSearchPresentations && (
+        <SearchPresentations 
+          onClose={() => setShowSearchPresentations(false)}
+          onLoadPresentation={(data) => console.log('Loaded:', data)}
+        />
+      )}
     </div>
   );
 };

@@ -111,6 +111,7 @@ export const PresentationProvider = ({ children }) => {
 
   const value = {
     slides,
+    setSlides,
     currentSlide,
     setCurrentSlide,
     addSlide,
