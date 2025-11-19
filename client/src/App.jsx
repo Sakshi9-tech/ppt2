@@ -10,6 +10,10 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
+import Profile from './pages/Profile';
+import ChangePassword from './pages/ChangePassword';
+import Wallet from './pages/Wallet';
+import Terms from './pages/Terms';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -44,6 +48,31 @@ function App() {
                       </ProtectedRoute>
                     } 
                   />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/change-password"
+                    element={
+                      <ProtectedRoute>
+                        <ChangePassword />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/wallet"
+                    element={
+                      <ProtectedRoute>
+                        <Wallet />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/terms" element={<Terms />} />
                 </Routes>
                 </Router>
                 </PresentationProvider>

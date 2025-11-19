@@ -28,42 +28,42 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#1B1A17' }}>
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-8">
+        <div className="panel p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <img src="/src/assets/icons/DOCS-LOGO-final-transparent.png" alt="Logo" className="w-10 h-10" />
-              <span className="text-3xl font-bold" style={{ color: '#F0A500' }}>EtherXPPT</span>
+              <span className="text-3xl font-bold nav-title">EtherXPPT</span>
             </div>
-            <h2 className="text-2xl font-bold" style={{ color: '#F0A500' }}>Welcome Back</h2>
-            <p className="text-gray-300">Sign in to your account</p>
+            <h2 className="text-2xl font-bold nav-title">Welcome Back</h2>
+            <p className="text-neutral-300">Sign in to your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-neutral-300 mb-2">
                 Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="form-input"
                 placeholder="Enter your email"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-neutral-300 mb-2">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="form-input"
                 placeholder="Enter your password"
                 required
               />
@@ -80,19 +80,19 @@ const Login = () => {
 
           <div className="mt-6 text-center space-y-3">
             <div className="text-center">
-              <Link to="/forgot-password" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+              <Link to="/forgot-password" className="font-medium text-sm" style={{ color: 'var(--accent-gold)' }}>
                 Forgot your password?
               </Link>
             </div>
-            <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-neutral-300">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+              <Link to="/signup" className="font-medium" style={{ color: 'var(--accent-gold)' }}>
                 Sign up
               </Link>
             </p>
-            <Link to="/" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-              ← Back to Home
-            </Link>
+              <Link to="/" className="text-sm muted">
+                ← Back to Home
+              </Link>
           </div>
         </div>
       </div>

@@ -47,56 +47,57 @@ const TableComponent = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-96 max-h-[80vh] overflow-y-auto">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div className="modal w-96 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 modal-header">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-medium">Insert Table</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">✕</button>
+            <h3 className="text-lg font-medium" style={{ color: 'var(--accent-gold)' }}>Insert Table</h3>
+            <button onClick={onClose} className="btn-ghost" aria-label="Close insert table">✕</button>
           </div>
         </div>
 
         <div className="p-4 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Rows</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-light)' }}>Rows</label>
               <input
                 type="number"
                 min="1"
                 max="10"
                 value={rows}
                 onChange={(e) => updateTableSize(parseInt(e.target.value), cols)}
-                className="w-full px-3 py-2 border rounded-md dark:bg-gray-700"
+                className="form-input"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Columns</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-light)' }}>Columns</label>
               <input
                 type="number"
                 min="1"
                 max="10"
                 value={cols}
                 onChange={(e) => updateTableSize(rows, parseInt(e.target.value))}
-                className="w-full px-3 py-2 border rounded-md dark:bg-gray-700"
+                className="form-input"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Table Preview</label>
-            <div className="border rounded-md overflow-hidden">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-light)' }}>Table Preview</label>
+            <div className="border rounded-md overflow-hidden card" style={{ border: '1px solid rgba(240,165,0,0.06)' }}>
               <table className="w-full text-sm">
                 <tbody>
                   {tableData.map((row, i) => (
                     <tr key={i}>
                       {row.map((cell, j) => (
-                        <td key={j} className="border border-gray-300 p-1">
+                        <td key={j} className="p-1" style={{ border: i === 0 ? 'none' : '1px solid rgba(240,165,0,0.06)', background: i === 0 ? 'var(--accent-gold)' : 'transparent', color: i === 0 ? 'var(--primary-dark)' : 'var(--text-light)' }}>
                           <input
                             type="text"
                             value={cell}
                             onChange={(e) => updateCell(i, j, e.target.value)}
                             placeholder={i === 0 ? `Header ${j + 1}` : `Cell ${i + 1},${j + 1}`}
                             className="w-full px-1 py-0.5 text-xs border-none outline-none bg-transparent"
+                            style={{ color: i === 0 ? 'var(--primary-dark)' : 'var(--text-light)' }}
                           />
                         </td>
                       ))}
@@ -107,16 +108,16 @@ const TableComponent = ({ onClose }) => {
             </div>
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4 border-t">
+          <div className="flex justify-end space-x-2 pt-4" style={{ borderTop: '1px solid rgba(240,165,0,0.06)' }}>
             <button
               onClick={onClose}
-              className="px-4 py-2 text-sm bg-gray-300 rounded hover:bg-gray-400"
+              className="btn-secondary"
             >
               Cancel
             </button>
             <button
               onClick={addTable}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="btn-primary"
             >
               Insert Table
             </button>

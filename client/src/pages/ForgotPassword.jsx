@@ -18,16 +18,16 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#1B1A17' }}>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: 'var(--primary-dark)' }}>
       <div className="max-w-md w-full">
         <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <img src="/src/assets/icons/DOCS-LOGO-final-transparent.png" alt="Logo" className="w-10 h-10" />
-              <span className="text-3xl font-bold" style={{ color: '#F0A500' }}>EtherXPPT</span>
+              <span className="text-3xl font-bold" style={{ color: 'var(--accent-gold)' }}>EtherXPPT</span>
             </div>
-            <h2 className="text-2xl font-bold" style={{ color: '#F0A500' }}>Reset Password</h2>
-            <p className="text-gray-300">Enter your email to receive reset instructions</p>
+            <h2 className="text-2xl font-bold" style={{ color: 'var(--accent-gold)' }}>Reset Password</h2>
+            <p className="muted">Enter your email to receive reset instructions</p>
           </div>
 
           {message ? (
@@ -58,8 +58,7 @@ const ForgotPassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded text-black disabled:opacity-50"
-                style={{ backgroundColor: '#F0A500' }}
+                className="w-full btn-primary py-3 disabled:opacity-50"
               >
                 {loading ? 'Sending...' : 'Send Reset Instructions'}
               </button>

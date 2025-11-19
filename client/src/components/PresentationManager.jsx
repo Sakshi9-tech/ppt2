@@ -109,19 +109,12 @@ const PresentationManager = ({ onClose, onLoadPresentation }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-4/5 max-w-6xl h-4/5 flex flex-col">
+      <div className="panel w-4/5 max-w-6xl h-4/5 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-b" style={{ borderColor: 'rgba(240,165,0,0.08)' }}>
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              Presentation Manager
-            </h2>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              ✕
-            </button>
+            <h2 className="text-xl font-bold nav-title">Presentation Manager</h2>
+            <button onClick={onClose} className="toolbar-btn">✕</button>
           </div>
           
           {/* Search and Actions */}
@@ -132,12 +125,12 @@ const PresentationManager = ({ onClose, onLoadPresentation }) => {
                 placeholder="Search presentations..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                className="form-input"
               />
               <select
                 value={selectedFolder}
                 onChange={(e) => setSelectedFolder(e.target.value)}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                className="form-select"
               >
                 <option value="all">All Folders</option>
                 {folders.map(folder => (
@@ -147,18 +140,8 @@ const PresentationManager = ({ onClose, onLoadPresentation }) => {
             </div>
             
             <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setShowNewFolder(true)}
-                className="px-3 py-2 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
-              >
-                📁 New Folder
-              </button>
-              <button
-                onClick={handleSavePresentation}
-                className="px-3 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                💾 Save Current
-              </button>
+              <button onClick={() => setShowNewFolder(true)} className="btn-secondary px-3 py-2">📁 New Folder</button>
+              <button onClick={handleSavePresentation} className="btn-primary px-3 py-2">💾 Save Current</button>
             </div>
           </div>
         </div>
@@ -166,37 +149,29 @@ const PresentationManager = ({ onClose, onLoadPresentation }) => {
         {/* Content */}
         <div className="flex-1 flex overflow-hidden">
           {/* Sidebar */}
-          <div className="w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-4">
+          <div className="w-64 sidebar p-4">
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Quick Actions
-                </h3>
+                <h3 className="text-sm font-medium text-neutral-300 mb-2">Quick Actions</h3>
                 <div className="space-y-2">
-                  <button className="w-full text-left px-3 py-2 text-sm bg-white dark:bg-gray-800 rounded border hover:bg-gray-50 dark:hover:bg-gray-700">
-                    📄 New Presentation
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm bg-white dark:bg-gray-800 rounded border hover:bg-gray-50 dark:hover:bg-gray-700">
-                    📂 Import File
-                  </button>
+                  <button className="w-full text-left px-3 py-2 text-sm btn-secondary">📄 New Presentation</button>
+                  <button className="w-full text-left px-3 py-2 text-sm btn-secondary">📂 Import File</button>
                 </div>
               </div>
               
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Templates
-                </h3>
+                <h3 className="text-sm font-medium text-neutral-300 mb-2">Templates</h3>
                 <div className="space-y-2">
                   {templates.map(template => (
                     <button
                       key={template.name}
-                      className="w-full text-left px-3 py-2 text-sm bg-white dark:bg-gray-800 rounded border hover:bg-gray-50 dark:hover:bg-gray-700"
+                      className="w-full text-left px-3 py-2 text-sm btn-secondary"
                     >
                       <div className="flex items-center space-x-2">
                         <span>{template.icon}</span>
                         <div>
                           <div className="font-medium">{template.name}</div>
-                          <div className="text-xs text-gray-500">{template.slides} slides</div>
+                          <div className="text-xs text-neutral-400">{template.slides} slides</div>
                         </div>
                       </div>
                     </button>
@@ -212,19 +187,19 @@ const PresentationManager = ({ onClose, onLoadPresentation }) => {
               {filteredPresentations.map((presentation) => (
                 <div
                   key={presentation.filename}
-                  className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow"
+                  className="panel p-4 hover:glow transition-shadow"
                 >
                   {/* Thumbnail */}
-                  <div className="w-full h-32 bg-gray-100 dark:bg-gray-700 rounded-md mb-3 flex items-center justify-center">
+                  <div className="w-full h-32 bg-transparent rounded-md mb-3 flex items-center justify-center">
                     <span className="text-4xl">📊</span>
                   </div>
                   
                   {/* Info */}
                   <div className="space-y-2">
-                    <h4 className="font-medium text-gray-900 dark:text-white truncate">
+                    <h4 className="font-medium text-white truncate">
                       {presentation.filename}
                     </h4>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                    <div className="text-xs text-neutral-400">
                       <div>Modified: {new Date(presentation.timestamp).toLocaleDateString()}</div>
                       <div>Folder: {presentation.folder}</div>
                     </div>
@@ -232,16 +207,11 @@ const PresentationManager = ({ onClose, onLoadPresentation }) => {
                   
                   {/* Actions */}
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
-                    <button
-                      onClick={() => handleLoadPresentation(presentation.filename)}
-                      className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
-                    >
-                      Open
-                    </button>
+                    <button onClick={() => handleLoadPresentation(presentation.filename)} className="btn-primary px-2 py-1 text-xs">Open</button>
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => handleDuplicatePresentation(presentation.filename)}
-                        className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                        className="p-1 text-neutral-300 hover:text-white"
                         title="Duplicate"
                       >
                         📋

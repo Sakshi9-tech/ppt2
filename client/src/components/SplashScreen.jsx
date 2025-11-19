@@ -1,97 +1,145 @@
 import React, { useState, useEffect } from 'react';
-import logo from '../assets/icons/DOCS-LOGO-final-transparent.png';
 
-// The SplashScreen component simulates the loading process and handles the transition.
+// Modern Professional SplashScreen with enhanced animations
 function SplashScreen({ onLoadingComplete }) {
-  // State to control the width of the progress bar (0% to 100%)
   const [progress, setProgress] = useState(0);
-  // State to control the visibility/fade of the entire splash screen
   const [isVisible, setIsVisible] = useState(true);
+  const [loadingText, setLoadingText] = useState('Initializing...');
 
-  // Constants for the loading simulation
-  const SIMULATION_DURATION = 3000; // Total time in milliseconds (3 seconds)
-  const PROGRESS_INTERVAL = 100;    // Update interval in milliseconds
+  const SIMULATION_DURATION = 2500;
+  const PROGRESS_INTERVAL = 50;
+
+  const loadingSteps = [
+    { progress: 20, text: 'Loading components...' },
+    { progress: 40, text: 'Setting up workspace...' },
+    { progress: 60, text: 'Preparing templates...' },
+    { progress: 80, text: 'Finalizing setup...' },
+    { progress: 100, text: 'Ready to create!' }
+  ];
 
   useEffect(() => {
-    // 1. Start the loading animation
     const startTime = Date.now();
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
       let newProgress = (elapsed / SIMULATION_DURATION) * 100;
 
+      // Update loading text based on progress
+      const currentStep = loadingSteps.find(step => newProgress >= step.progress - 20 && newProgress < step.progress + 20);
+      if (currentStep) {
+        setLoadingText(currentStep.text);
+      }
+
       if (newProgress >= 100) {
         newProgress = 100;
+        setLoadingText('Ready to create!');
         clearInterval(interval);
 
-        // 2. Once progress is 100%, start the fade-out process
         setTimeout(() => {
-          setIsVisible(false); // Start fading out (opacity transition)
-
-          // 3. After the fade-out duration, call the completion handler
-          // This delay should match the CSS transition duration (500ms)
-          setTimeout(onLoadingComplete, 500);
-        }, 300); // Small delay before fade starts
+          setIsVisible(false);
+          setTimeout(onLoadingComplete, 600);
+        }, 400);
       }
 
       setProgress(newProgress);
     }, PROGRESS_INTERVAL);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(interval);
   }, [onLoadingComplete]);
 
-  // If the component is no longer visible (faded out), return nothing.
   if (!isVisible) {
     return null;
   }
 
-  // Tailwind CSS classes provide the visual design and responsiveness
   return (
     <div
-      className={`fixed inset-0 flex flex-col items-center justify-center p-8 transition-opacity duration-500 z-50 shadow-2xl ${
-        isVisible ? 'opacity-100' : 'opacity-0'
+      className={`fixed inset-0 flex flex-col items-center justify-center p-8 transition-all duration-600 z-50 ${
+        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
       }`}
-      style={{ 
-        fontFamily: 'Inter, sans-serif',
-        backgroundColor: '#1B1A17'
-      }}
+      style={{ background: 'var(--primary-dark)' }}
     >
-      <div className="flex flex-col items-center space-y-8 max-w-sm w-full">
-        
-        {/* EtherXPPT Logo */}
-        <div className="p-4 bg-gray-800 rounded-2xl shadow-xl border border-gray-700">
-          <img 
-            src={logo} 
-            alt="EtherXPPT Logo" 
-            className="w-16 h-16 object-contain"
-          />
+      {/* Animated Background Pattern */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-soft"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-soft animation-delay-200"></div>
+        <div className="absolute top-40 left-1/2 transform -translate-x-1/2 w-80 h-80 bg-primary-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-soft animation-delay-100"></div>
+      </div>
+
+      <div className="relative flex flex-col items-center space-y-8 max-w-md w-full">
+        {/* Modern Logo */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl blur-lg opacity-30 animate-pulse-soft"></div>
+          <div className="relative p-6 bg-white rounded-2xl shadow-strong border border-neutral-200">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center animate-bounce-in">
+              <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+              </svg>
+            </div>
+          </div>
         </div>
 
-        {/* Application Title */}
-        <h1 className="text-4xl font-extrabold tracking-tight" style={{ color: '#F0A500' }}>
-          Loading Application...
-        </h1>
+        {/* Brand Name */}
+        <div className="text-center space-y-2 animate-fade-in animation-delay-200">
+          <h1 className="text-5xl font-bold" style={{ color: 'var(--accent-gold)' }}>
+            EtherXPPT
+          </h1>
+          <p className="text-lg font-medium muted">
+            Professional Presentation Suite
+          </p>
+        </div>
         
-        {/* Status Text */}
-        <p className="text-sm font-medium text-gray-400">
-          Preparing environment for launch.
-        </p>
+        {/* Loading Status */}
+        <div className="text-center space-y-4 w-full animate-fade-in animation-delay-300">
+          <p className="text-sm font-medium h-5 transition-all duration-300 muted">
+            {loadingText}
+          </p>
 
-        {/* Loading Bar Container */}
-        <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden shadow-inner">
-          {/* Progress Bar with Transition */}
-          <div
-            className="h-full rounded-full transition-all duration-100 ease-linear"
-            style={{ 
-              width: `${progress}%`,
-              backgroundColor: '#F0A500'
-            }}
-            role="progressbar"
-            aria-valuenow={Math.round(progress)}
-            aria-valuemin="0"
-            aria-valuemax="100"
-          ></div>
+          {/* Modern Progress Bar */}
+          <div className="w-full">
+            <div className="flex justify-between text-xs mb-2 muted">
+              <span>Loading</span>
+              <span>{Math.round(progress)}%</span>
+            </div>
+            <div className="w-full h-2 rounded-full overflow-hidden shadow-inner" style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}>
+              <div
+                className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden"
+                style={{ width: `${progress}%`, background: 'linear-gradient(90deg, var(--accent-gold), var(--gold-hover))' }}
+              >
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 -skew-x-12 animate-slide-in-right" style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Feature Highlights */}
+        <div className="grid grid-cols-3 gap-4 w-full animate-fade-in animation-delay-300">
+          <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}>
+            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5z" />
+              </svg>
+            </div>
+            <p className="text-xs font-medium muted">Templates</p>
+          </div>
+          
+          <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}>
+            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z" />
+              </svg>
+            </div>
+            <p className="text-xs font-medium muted">Charts</p>
+          </div>
+          
+          <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}>
+            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+              </svg>
+            </div>
+            <p className="text-xs font-medium muted">Export</p>
+          </div>
         </div>
       </div>
     </div>

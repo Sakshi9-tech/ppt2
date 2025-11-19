@@ -34,35 +34,35 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#1B1A17' }}>
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-8">
+        <div className="panel p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <img src="/src/assets/icons/DOCS-LOGO-final-transparent.png" alt="Logo" className="w-10 h-10" />
-              <span className="text-3xl font-bold" style={{ color: '#F0A500' }}>EtherXPPT</span>
+              <span className="text-3xl font-bold nav-title">EtherXPPT</span>
             </div>
-            <h2 className="text-2xl font-bold" style={{ color: '#F0A500' }}>Create Account</h2>
-            <p className="text-gray-300">Join thousands of users creating amazing presentations</p>
+            <h2 className="text-2xl font-bold nav-title">Create Account</h2>
+            <p className="text-neutral-300">Join thousands of users creating amazing presentations</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white"
-                placeholder="First Name"
-                required
-              />
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="form-input"
+                  placeholder="First Name"
+                  required
+                />
               <input
                 type="text"
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white"
+                className="form-input"
                 placeholder="Last Name"
                 required
               />
@@ -73,7 +73,7 @@ const Signup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white"
+              className="form-input"
               placeholder="Email Address"
               required
             />
@@ -83,7 +83,7 @@ const Signup = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white"
+              className="form-input"
               placeholder="Password"
               required
             />
@@ -93,7 +93,7 @@ const Signup = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white"
+              className="form-input"
               placeholder="Confirm Password"
               required
             />
@@ -101,8 +101,7 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded text-black disabled:opacity-50"
-              style={{ backgroundColor: '#F0A500' }}
+              className="w-full btn-primary py-3 disabled:opacity-50"
             >
               {loading ? 'Creating...' : 'Sign Up'}
             </button>

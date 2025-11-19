@@ -1,15 +1,201 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { usePresentation } from '../contexts/PresentationContext';
 
 const Sidebar = () => {
+  const { slides, currentSlide, setCurrentSlide, addSlide, deleteSlide, duplicateSlide } = usePresentation();
+  const [draggedSlide, setDraggedSlide] = useState(null);
+  const [showContextMenu, setShowContextMenu] = useState(null);
+
+  const handleSlideClick = (index) => {
+    setCurrentSlide(index);
+    setShowContextMenu(null);
+  };
+
+  const handleRightClick = (e, index) => {
+    e.preventDefault();
+    setShowContextMenu(index);
+  };
+
+  const handleDragStart = (e, index) => {
+    setDraggedSlide(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e, dropIndex) => {
+    e.preventDefault();
+    if (draggedSlide !== null && draggedSlide !== dropIndex) {
+      // Handle slide reordering logic here
+      console.log(`Move slide ${draggedSlide} to position ${dropIndex}`);
+    }
+    setDraggedSlide(null);
+  };
+
   return (
-    <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4">
-      <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Slides</h3>
-      <div className="space-y-2">
-        <div className="bg-blue-50 dark:bg-blue-900 border-2 border-blue-500 rounded p-2">
-          <div className="text-xs text-gray-600 dark:text-gray-300">Slide 1</div>
-          <div className="bg-white dark:bg-gray-700 h-16 rounded mt-1"></div>
+    <div className="sidebar scrollbar-thin">
+      {/* Header */}
+      <div className="p-4 border-b border-neutral-200 dark:border-neutral-800">
+        <div className="flex items-center justify-between mb-4">
+          {/* Themed header title uses nav-title for consistent styling */}
+          <h3 className="text-lg font-semibold nav-title">Slides</h3>
+          <button
+            onClick={() => addSlide()}
+            className="btn-primary"
+            title="Add New Slide"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+        </div>
+        
+        {/* Slide Counter */}
+        <div className="text-sm text-neutral-500 dark:text-neutral-400">
+          {slides.length} slide{slides.length !== 1 ? 's' : ''}
         </div>
       </div>
+
+      {/* Slides List */}
+      <div className="flex-1 p-4 space-y-3 overflow-y-auto">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`relative group cursor-pointer transition-all duration-200 ${
+              currentSlide === index
+                ? 'ring-2 ring-primary-500 shadow-glow'
+                : 'hover:shadow-medium'
+            }`}
+            onClick={() => handleSlideClick(index)}
+            onContextMenu={(e) => handleRightClick(e, index)}
+            draggable
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, index)}
+          >
+            {/* Slide Thumbnail - switched to themed class for consistent look */}
+            <div className={`slide-thumbnail ${currentSlide === index ? 'selected' : ''}`}>
+              {/* Slide Number */}
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                  {index + 1}
+                </span>
+                {currentSlide === index && (
+                  <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse-soft"></div>
+                )}
+              </div>
+              
+              {/* Slide Preview */}
+              <div 
+                className="aspect-video bg-neutral-50 dark:bg-neutral-900 rounded border border-neutral-200 dark:border-neutral-700 p-2 text-xs overflow-hidden"
+                style={{ backgroundColor: slide.background || '#ffffff' }}
+              >
+                {/* Title Preview */}
+                {slide.title && (
+                  <div className="font-semibold text-neutral-800 dark:text-neutral-200 truncate mb-1">
+                    {slide.title.replace(/<[^>]*>/g, '').substring(0, 20)}...
+                  </div>
+                )}
+                
+                {/* Content Preview */}
+                {slide.content && (
+                  <div className="text-neutral-600 dark:text-neutral-400 text-xs leading-tight">
+                    {slide.content.replace(/<[^>]*>/g, '').substring(0, 40)}...
+                  </div>
+                )}
+                
+                {/* Elements Preview */}
+                {slide.elements && slide.elements.length > 0 && (
+                  <div className="mt-1 flex gap-1">
+                    {slide.elements.slice(0, 3).map((element, i) => (
+                      <div
+                        key={i}
+                        className="w-2 h-2 bg-primary-400 rounded-sm"
+                        title={element.type}
+                      ></div>
+                    ))}
+                    {slide.elements.length > 3 && (
+                      <div className="text-xs text-neutral-400">+{slide.elements.length - 3}</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* Hover Actions */}
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowContextMenu(showContextMenu === index ? null : index);
+                }}
+                className="btn-ghost rounded"
+              >
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+              </button>
+            </div>
+            
+            {/* Context Menu */}
+            {showContextMenu === index && (
+              <div className="absolute top-8 right-2 dropdown-menu z-50">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    duplicateSlide(index);
+                    setShowContextMenu(null);
+                  }}
+                  className="dropdown-item"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Duplicate
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (slides.length > 1) {
+                      deleteSlide(index);
+                    }
+                    setShowContextMenu(null);
+                  }}
+                  className="dropdown-item text-red-600 dark:text-red-400"
+                  disabled={slides.length <= 1}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+        
+        {/* Add Slide Button */}
+        <button
+          onClick={() => addSlide()}
+          className="btn-secondary w-full flex items-center justify-center gap-3 p-4"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          <span className="text-sm font-medium">Add Slide</span>
+        </button>
+      </div>
+      
+      {/* Click outside to close context menu */}
+      {showContextMenu !== null && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setShowContextMenu(null)}
+        ></div>
+      )}
     </div>
   );
 };

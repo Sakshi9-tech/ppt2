@@ -84,40 +84,43 @@ const ImportExport = ({ onClose }) => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-96 max-h-[80vh] overflow-y-auto">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div className="modal w-96 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 modal-header">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+            <h3 className="text-lg font-medium" style={{ color: 'var(--accent-gold)' }}>
               Import & Export
             </h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="btn-ghost"
+              aria-label="Close import export modal"
             >
               ✕
             </button>
           </div>
-          
+
           {/* Tabs */}
-          <div className="flex mt-4 border-b border-gray-200 dark:border-gray-600">
+          <div className="flex mt-4">
             <button
               onClick={() => setActiveTab('export')}
-              className={`px-4 py-2 text-sm font-medium ${
+              className="px-4 py-2 text-sm font-medium"
+              style={
                 activeTab === 'export'
-                  ? 'border-b-2 border-blue-500 text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+                  ? { borderBottom: '2px solid var(--accent-gold)', color: 'var(--accent-gold)' }
+                  : { color: 'rgba(255,255,255,0.75)' }
+              }
             >
               Export
             </button>
             <button
               onClick={() => setActiveTab('import')}
-              className={`px-4 py-2 text-sm font-medium ${
+              className="px-4 py-2 text-sm font-medium"
+              style={
                 activeTab === 'import'
-                  ? 'border-b-2 border-blue-500 text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+                  ? { borderBottom: '2px solid var(--accent-gold)', color: 'var(--accent-gold)' }
+                  : { color: 'rgba(255,255,255,0.75)' }
+              }
             >
               Import
             </button>
@@ -135,15 +138,16 @@ const ImportExport = ({ onClose }) => {
               {exportFormats.map((format) => (
                 <div
                   key={format.id}
-                  className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="flex items-center justify-between p-3 rounded-lg card"
+                  style={{ border: '1px solid rgba(240,165,0,0.06)' }}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{format.icon}</span>
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium" style={{ color: 'var(--text-light)' }}>
                         {format.name}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="text-xs" style={{ color: 'rgba(255,255,255,0.65)' }}>
                         {format.desc}
                       </div>
                     </div>
@@ -151,7 +155,7 @@ const ImportExport = ({ onClose }) => {
                   <button
                     onClick={() => handleExport(format.id, `presentation.${format.id === 'images' ? 'zip' : format.id}`)}
                     disabled={isProcessing}
-                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                    className="btn-primary"
                   >
                     {isProcessing ? '...' : 'Export'}
                   </button>
@@ -176,21 +180,21 @@ const ImportExport = ({ onClose }) => {
               />
               
               <div className="space-y-3">
-                <div className="p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-center">
+                <div className="p-4 border-2 border-dashed rounded-lg text-center card" style={{ borderColor: 'rgba(240,165,0,0.08)' }}>
                   <div className="text-4xl mb-2">📁</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  <div className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.7)' }}>
                     Drag and drop files here or click to browse
                   </div>
                   <button
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isProcessing}
-                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+                    className="btn-primary"
                   >
                     {isProcessing ? 'Processing...' : 'Choose File'}
                   </button>
                 </div>
-                
-                <div className="text-xs text-gray-500 dark:text-gray-400">
+
+                <div className="text-xs" style={{ color: 'rgba(255,255,255,0.62)' }}>
                   <strong>Supported formats:</strong>
                   <ul className="mt-1 space-y-1">
                     <li>• .json - EtherXPPT native format (full compatibility)</li>
@@ -203,10 +207,10 @@ const ImportExport = ({ onClose }) => {
         </div>
 
         {isProcessing && (
-          <div className="absolute inset-0 bg-white bg-opacity-75 dark:bg-gray-800 dark:bg-opacity-75 flex items-center justify-center rounded-lg">
+          <div className="absolute inset-0 bg-[rgba(27,26,23,0.85)] flex items-center justify-center rounded-lg">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Processing...</div>
+              <div className="animate-spin rounded-full h-8 w-8 mx-auto mb-2" style={{ borderTop: '3px solid var(--accent-gold)', borderRight: '3px solid transparent', borderBottom: '3px solid transparent', borderLeft: '3px solid transparent' }}></div>
+              <div className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Processing...</div>
             </div>
           </div>
         )}

@@ -45,22 +45,22 @@ const ChartComponent = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-96 max-h-[80vh] overflow-y-auto">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div className="modal w-96 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 modal-header">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-medium">Insert Chart</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">✕</button>
+            <h3 className="text-lg font-medium" style={{ color: 'var(--accent-gold)' }}>Insert Chart</h3>
+            <button onClick={onClose} className="btn-ghost" aria-label="Close insert chart">✕</button>
           </div>
         </div>
 
         <div className="p-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Chart Type</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-light)' }}>Chart Type</label>
             <select 
               value={chartType} 
               onChange={(e) => setChartType(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-700"
+              className="form-select"
             >
               <option value="bar">Bar Chart</option>
               <option value="line">Line Chart</option>
@@ -71,10 +71,10 @@ const ChartComponent = ({ onClose }) => {
 
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="block text-sm font-medium">Data Points</label>
+              <label className="block text-sm font-medium" style={{ color: 'var(--text-light)' }}>Data Points</label>
               <button 
                 onClick={addDataPoint}
-                className="px-2 py-1 text-xs bg-blue-600 text-white rounded"
+                className="btn-secondary"
               >
                 + Add
               </button>
@@ -88,18 +88,20 @@ const ChartComponent = ({ onClose }) => {
                     value={item.label}
                     onChange={(e) => updateData(index, 'label', e.target.value)}
                     placeholder="Label"
-                    className="flex-1 px-2 py-1 text-sm border rounded dark:bg-gray-700"
+                    className="flex-1 form-input"
                   />
                   <input
                     type="number"
                     value={item.value}
                     onChange={(e) => updateData(index, 'value', e.target.value)}
                     placeholder="Value"
-                    className="w-20 px-2 py-1 text-sm border rounded dark:bg-gray-700"
+                    className="form-input"
+                    style={{ width: 80 }}
                   />
                   <button
                     onClick={() => removeDataPoint(index)}
-                    className="p-1 text-red-500 hover:text-red-700"
+                    className="btn-ghost text-red-400"
+                    aria-label={`Remove data point ${index + 1}`}
                   >
                     ×
                   </button>
@@ -108,16 +110,16 @@ const ChartComponent = ({ onClose }) => {
             </div>
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4 border-t">
+          <div className="flex justify-end space-x-2 pt-4" style={{ borderTop: '1px solid rgba(240,165,0,0.06)' }}>
             <button
               onClick={onClose}
-              className="px-4 py-2 text-sm bg-gray-300 rounded hover:bg-gray-400"
+              className="btn-secondary"
             >
               Cancel
             </button>
             <button
               onClick={addChart}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="btn-primary"
             >
               Insert Chart
             </button>

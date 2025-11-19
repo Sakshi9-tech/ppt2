@@ -6,43 +6,41 @@ const SpeakerNotes = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   
   const slide = slides[currentSlide] || {};
-  const notes = slide.speakerNotes || '';
 
   const handleNotesChange = (e) => {
-    updateSlide(currentSlide, { speakerNotes: e.target.value });
+    updateSlide(currentSlide, { notes: e.target.value });
   };
 
-  return (
-    <div className={`bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 transition-all duration-300 ${
-      isExpanded ? 'h-48' : 'h-12'
-    }`}>
-      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center space-x-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            📝 Speaker Notes
-          </span>
-          <span className="text-xs text-gray-500">
-            (Private notes for presenter)
-          </span>
-        </div>
+  if (!isExpanded) {
+    return (
+      <div className="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 p-2">
         <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          onClick={() => setIsExpanded(true)}
+          className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
         >
-          {isExpanded ? '▼' : '▲'}
+          📝 Click to add speaker notes
         </button>
       </div>
-      
-      {isExpanded && (
-        <div className="p-4 h-36">
-          <textarea
-            value={notes}
-            onChange={handleNotesChange}
-            placeholder="Add speaker notes for this slide..."
-            className="w-full h-full resize-none border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      )}
+    );
+  }
+
+  return (
+    <div className="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 p-4">
+      <div className="flex items-center justify-between mb-2">
+        <h4 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Speaker Notes</h4>
+        <button
+          onClick={() => setIsExpanded(false)}
+          className="text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
+        >
+          ✕
+        </button>
+      </div>
+      <textarea
+        value={slide.notes || ''}
+        onChange={handleNotesChange}
+        placeholder="Add your speaker notes here..."
+        className="w-full h-24 p-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded resize-none focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-neutral-800 dark:text-neutral-200"
+      />
     </div>
   );
 };

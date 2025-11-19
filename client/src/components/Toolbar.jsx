@@ -32,33 +32,69 @@ const Toolbar = ({ activePanel, setActivePanel }) => {
     setShowExportMenu(false);
   };
 
+  const ToolbarButton = ({ onClick, active, children, title, variant = 'default' }) => {
+    const baseClasses = 'toolbar-btn';
+    /* Map variant names to the new theme classes so visuals match dark+gold palette */
+    const variantClasses = {
+      default: active ? 'active' : '',
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      success: 'btn-primary',
+      warning: 'btn-primary'
+    };
+    
+    return (
+      <button
+        onClick={onClick}
+        className={`${baseClasses} ${variantClasses[variant]}`}
+        title={title}
+      >
+        {children}
+      </button>
+    );
+  };
+
   return (
-    <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2">
-      <div className="flex items-center space-x-2 flex-wrap">
+    <div className="toolbar">
+      <div className="flex items-center gap-1 flex-wrap">
         {/* File Operations */}
-        <div className="flex items-center space-x-1 border-r border-gray-300 dark:border-gray-600 pr-2">
-          <button
+        <div className="toolbar-group">
+          <ToolbarButton
             onClick={() => setShowPresentationManager(true)}
-            className="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
             title="Manage Presentations"
+            variant="secondary"
           >
-            📁 Manage
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 1v6" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 1v6" />
+            </svg>
+            Manage
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={() => setShowTemplateLibrary(true)}
-            className="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
             title="Template Library"
+            variant="secondary"
           >
-            🎨 Templates
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+            </svg>
+            Templates
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={() => addSlide()}
-            className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
             title="New Slide (Ctrl+Shift+N)"
+            variant="primary"
           >
-            📄 New Slide
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            New Slide
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={() => {
               try {
                 const name = prompt('Enter presentation name:') || `presentation-${Date.now()}`;
@@ -68,109 +104,141 @@ const Toolbar = ({ activePanel, setActivePanel }) => {
                 alert('Save failed: ' + error.message);
               }
             }}
-            className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
             title="Quick Save (Ctrl+S)"
+            variant="success"
           >
-            💾 Save
-          </button>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            Save
+          </ToolbarButton>
         </div>
 
         {/* Edit Operations */}
-        <div className="flex items-center space-x-1 border-r border-gray-300 dark:border-gray-600 pr-2">
-          <button
+        <div className="toolbar-group">
+          <ToolbarButton
             onClick={undo}
-            className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
             title="Undo (Ctrl+Z)"
+            variant="secondary"
           >
-            ↶ Undo
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+            </svg>
+            Undo
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={redo}
-            className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
             title="Redo (Ctrl+Y)"
+            variant="secondary"
           >
-            ↷ Redo
-          </button>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10h-10a8 8 0 00-8 8v2m18-10l-6 6m6-6l-6-6" />
+            </svg>
+            Redo
+          </ToolbarButton>
         </div>
 
         {/* Panel Toggles */}
-        <div className="flex items-center space-x-1 border-r border-gray-300 dark:border-gray-600 pr-2">
-          <button
+        <div className="toolbar-group">
+          <ToolbarButton
             onClick={() => setActivePanel(activePanel === 'layout' ? null : 'layout')}
-            className={`px-3 py-1 text-sm rounded transition-colors ${
-              activePanel === 'layout'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
-            }`}
+            active={activePanel === 'layout'}
+            title="Layout Panel"
           >
-            📐 Layout
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+            </svg>
+            Layout
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={() => setActivePanel(activePanel === 'format' ? null : 'format')}
-            className={`px-3 py-1 text-sm rounded transition-colors ${
-              activePanel === 'format'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
-            }`}
+            active={activePanel === 'format'}
+            title="Format Panel"
           >
-            🎨 Format
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+            </svg>
+            Format
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={() => setActivePanel(activePanel === 'draw' ? null : 'draw')}
-            className={`px-3 py-1 text-sm rounded transition-colors ${
-              activePanel === 'draw'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
-            }`}
+            active={activePanel === 'draw'}
+            title="Drawing Tools"
           >
-            ✏️ Draw
-          </button>
-          <button
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+            Draw
+          </ToolbarButton>
+          
+          <ToolbarButton
             onClick={() => setActivePanel(activePanel === 'addins' ? null : 'addins')}
-            className={`px-3 py-1 text-sm rounded transition-colors ${
-              activePanel === 'addins'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
-            }`}
+            active={activePanel === 'addins'}
+            title="Add-ins Panel"
           >
-            🧩 Add-ins
-          </button>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            Add-ins
+          </ToolbarButton>
         </div>
 
         {/* Import/Export */}
-        <div className="flex items-center space-x-1 border-r border-gray-300 dark:border-gray-600 pr-2">
-          <button
+        <div className="toolbar-group">
+          <ToolbarButton
             onClick={() => setShowImportExport(true)}
-            className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            title="Import/Export"
+            variant="secondary"
           >
-            📁 Import/Export
-          </button>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+            </svg>
+            Import/Export
+          </ToolbarButton>
+          
           <div className="relative">
-            <button
+            <ToolbarButton
               onClick={() => setShowExportMenu(!showExportMenu)}
-              className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              title="Quick Export"
+              variant="warning"
             >
-              📤 Quick Export
-            </button>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              Export
+            </ToolbarButton>
+            
             {showExportMenu && (
-              <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
+              <div className="dropdown-menu">
                 <button
                   onClick={() => handleExport('pptx')}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="dropdown-item"
                 >
-                  📊 Export as PPTX
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Export as PPTX
                 </button>
                 <button
                   onClick={() => handleExport('pdf')}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="dropdown-item"
                 >
-                  📄 Export as PDF
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  Export as PDF
                 </button>
                 <button
                   onClick={() => handleExport('print')}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="dropdown-item"
                 >
-                  🖨️ Print
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print
                 </button>
               </div>
             )}
@@ -178,13 +246,23 @@ const Toolbar = ({ activePanel, setActivePanel }) => {
         </div>
 
         {/* Theme Toggle */}
-        <button
-          onClick={toggleTheme}
-          className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
-          title="Toggle Theme"
-        >
-          {isDark ? '☀️' : '🌙'}
-        </button>
+        <div className="toolbar-group">
+          <ToolbarButton
+            onClick={toggleTheme}
+            title="Toggle Theme"
+            variant="secondary"
+          >
+            {isDark ? (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            )}
+          </ToolbarButton>
+        </div>
       </div>
       
       {/* Modals */}

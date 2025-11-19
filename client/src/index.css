@@ -1,30 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
+@layer base {
+  /* Theme variables for Dark + Gold palette (Primary Dark, Accent Gold, Text Light) */
+  :root {
+    --primary-dark: #1B1A17;
+    --accent-gold: #F0A500;
+    --text-light: #FFFFFF;
+    --gold-hover: #d48f00; /* slightly darker for hover states */
+    --panel-radius: 12px;
+    --control-radius: 10px;
+    --card-shadow: 0 6px 18px rgba(240,165,0,0.06);
+  }
+
+  /* Global theme applied to body so all components inherit colors */
+  body {
+    background: var(--primary-dark);
+    color: var(--text-light);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .dark body {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+  }
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background-color: #1B1A17;
-  color: #F0A500;
+@layer components {
+  /* Modern Button Styles - adapted to Gold theme */
+  .btn-primary {
+    background: var(--accent-gold);
+    color: var(--primary-dark);
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px; /* per spec */
+    transition: all 180ms ease;
+    box-shadow: var(--card-shadow);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-hover);
+    transform: scale(1.02);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
+    padding: 8px 16px;
+    border-radius: 10px;
+    transition: all 160ms ease;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(240,165,0,0.06);
+    transform: scale(1.02);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-light);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 150ms ease;
+  }
+
+  .btn-ghost:hover { transform: scale(1.02); }
+
+  /* Panel / Card Styles - dark panels with subtle gold accents */
+  .panel {
+    background: var(--primary-dark);
+    border: 1px solid rgba(240,165,0,0.12);
+    border-radius: var(--panel-radius);
+    padding: 18px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .panel-header {
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(240,165,0,0.08);
+  }
+
+  /* (panel-header moved above to ensure consistent golden divider look) */
+
+  /* Toolbar styled dark with gold icons */
+  .toolbar {
+    background: var(--primary-dark);
+    border-bottom: 1px solid var(--accent-gold);
+    padding: 10px 14px;
+    display:flex;align-items:center;gap:8px;
+  }
+
+  .toolbar-group { display:flex;align-items:center;gap:8px;padding:6px 10px;border-right:1px solid rgba(240,165,0,0.06);} 
+
+  .toolbar-btn {
+    color: var(--accent-gold);
+    background: transparent;
+    padding: 8px;
+    border-radius: 8px;
+    display:inline-flex;align-items:center;gap:8px;transition:all 140ms ease;
+  }
+
+  .toolbar-btn:hover { background: rgba(240,165,0,0.06); transform: scale(1.02); }
+
+  .toolbar-btn.active { background: var(--accent-gold); color: var(--primary-dark); }
+
+  /* Editor Canvas - must stay white for editing clarity */
+  .slide-canvas {
+    background: #ffffff; /* keep canvas white as requested */
+    border: 2px solid var(--accent-gold); /* gold border */
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(240,165,0,0.06);
+    overflow: hidden;
+    color: #000000; /* ensure inside text remains dark */
+  }
+
+  .slide-element { position: absolute; cursor: move; border-radius: 8px; transition: all 160ms ease; }
+  .slide-element:hover { transform: translateZ(0) scale(1.01); }
+  .slide-element.selected { outline: 2px dashed rgba(240,165,0,0.9); box-shadow: 0 8px 20px rgba(240,165,0,0.08); }
+
+  /* Input Fields - transparent with gold borders */
+  .form-input {
+    width:100%; padding:10px 12px; font-size:0.95rem; border-radius: var(--control-radius); background: transparent; border: 1px solid var(--accent-gold); color: var(--text-light); transition: all 140ms ease;
+  }
+
+  .form-input::placeholder { color: rgba(240,165,0,0.6); }
+
+  .form-input:focus { box-shadow: 0 6px 18px rgba(240,165,0,0.08); outline: none; transform: translateY(-1px); }
+
+  .form-select { width:100%; padding:10px 12px; border-radius: var(--control-radius); border:1px solid var(--accent-gold); background: transparent; color: var(--text-light); }
+
+  /* Dropdowns / Menus */
+  .dropdown-menu { position:absolute; background: var(--primary-dark); border:1px solid rgba(240,165,0,0.08); border-radius: 12px; padding:6px; z-index:50; }
+  .dropdown-item { display:flex; align-items:center; gap:10px; padding:8px 12px; color:var(--text-light); border-radius:8px; }
+  .dropdown-item:hover { background: rgba(240,165,0,0.06); color: var(--primary-dark); }
+
+  /* Sidebar */
+  .sidebar { width: 260px; background: var(--primary-dark); border-right: 1px solid rgba(240,165,0,0.06); display:flex;flex-direction:column;padding:12px; }
+
+  .sidebar .slide-thumbnail { border: 1px solid var(--accent-gold); border-radius: 8px; overflow: hidden; background: rgba(255,255,255,0.03); padding:6px; transition: all 140ms ease; }
+  .sidebar .slide-thumbnail:hover { transform: scale(1.02); box-shadow: 0 10px 24px rgba(240,165,0,0.04); }
+  .sidebar .slide-thumbnail.selected { background: var(--accent-gold); color: var(--primary-dark); border-color: var(--accent-gold); }
+
+  /* Status Bar */
+  .status-bar { background: transparent; border-top:1px solid rgba(240,165,0,0.04); padding:8px 12px; color:var(--text-light); }
+
+  /* Navbar */
+  .navbar { background: var(--primary-dark); color: var(--accent-gold); border-bottom: 1px solid var(--accent-gold); padding: 12px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .navbar .nav-title { color: var(--accent-gold); font-weight:700; font-size:1.05rem; }
+  .navbar a, .navbar button { color: var(--accent-gold); }
+
+  /* Modal styling */
+  .modal { background: rgba(27,26,23,0.85); border:1px solid var(--accent-gold); border-radius: 12px; color: var(--text-light); padding: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+  .modal .modal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
+  .modal .modal-footer { display:flex;gap:8px;justify-content:flex-end;margin-top:14px; }
+
+  /* Generic small card hover */
+  .card { border-radius: 12px; transition: all 160ms ease; }
+  .card:hover { transform: scale(1.02); box-shadow: var(--card-shadow); }
+
+  /* Muted text helper for subtle secondary copy */
+  .muted { color: rgba(255,255,255,0.75); }
+
+  /* Lightweight gold border utility (use for subtle dividers) */
+  .gold-border-light { border-color: rgba(240,165,0,0.08); }
+
+  /* Utility for subtle gold glow */
+  .glow { box-shadow: 0 8px 22px rgba(240,165,0,0.06); }
+
+
+  /* Scrollbar Styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  .dark .scrollbar-thin {
+    scrollbar-color: #4b5563 #374151;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-track {
+    background: #374151;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #4b5563;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
 }
 
-.btn-primary {
-  background-color: #F0A500;
-  color: #000;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-}
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 
-.panel {
-  background-color: #2A2A2A;
-  border: 1px solid #444;
-  border-radius: 0.5rem;
-  padding: 1rem;
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
 }

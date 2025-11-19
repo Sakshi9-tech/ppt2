@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { usePresentation } from '../contexts/PresentationContext';
 import Toolbar from '../components/Toolbar';
 import Sidebar from '../components/Sidebar';
 import SlideEditor from '../components/SlideEditor';
@@ -30,6 +31,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+  const { slides, currentSlide } = usePresentation();
   const [activePanel, setActivePanel] = useState(null);
   const [isSlideshow, setIsSlideshow] = useState(false);
   const [showFileMenu, setShowFileMenu] = useState(false);
@@ -77,161 +79,213 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+    <div className="h-screen flex flex-col bg-neutral-50 dark:bg-neutral-900">
       <KeyboardShortcuts />
       
-      {/* Top Menu Bar */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <img src="/src/assets/icons/DOCS-LOGO-final-transparent.png" alt="Logo" className="w-8 h-8" />
-              <span className="text-xl font-bold text-gray-800 dark:text-white">EtherXPPT</span>
+      {/* Modern Top Menu Bar */}
+      <div className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 shadow-soft">
+        <div className="flex items-center justify-between px-6 py-3">
+          <div className="flex items-center space-x-8">
+            {/* Logo and Brand */}
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-neutral-800 to-neutral-600 dark:from-neutral-200 dark:to-neutral-400 bg-clip-text text-transparent">
+                EtherXPPT
+              </span>
             </div>
             
-            {/* Menu Items */}
-            <nav className="flex space-x-6">
+            {/* Navigation Menu */}
+            <nav className="flex items-center space-x-1">
               <div className="relative">
                 <button 
                   onClick={() => setShowFileMenu(!showFileMenu)}
-                  className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                  className="px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200"
                 >
                   File
                 </button>
                 {showFileMenu && (
-                  <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 w-48">
+                  <div className="dropdown-menu">
                     <button
                       onClick={() => {
                         setShowPresentationManager(true);
                         setShowFileMenu(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="dropdown-item"
                     >
-                      📁 Manage Presentations
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                      </svg>
+                      Manage Presentations
                     </button>
                     <button
                       onClick={() => {
                         setShowTemplateLibrary(true);
                         setShowFileMenu(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="dropdown-item"
                     >
-                      🎨 Template Library
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5z" />
+                      </svg>
+                      Template Library
                     </button>
                     <button
                       onClick={() => {
                         setShowRecentPresentations(true);
                         setShowFileMenu(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="dropdown-item"
                     >
-                      🕰 Recent Presentations
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Recent Presentations
                     </button>
                     <button
                       onClick={() => {
                         setShowSearchPresentations(true);
                         setShowFileMenu(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="dropdown-item"
                     >
-                      🔍 Search Presentations
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      Search Presentations
                     </button>
                   </div>
                 )}
               </div>
+              
               <button 
                 onClick={() => navigate('/')}
-                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200"
               >
                 Home
               </button>
-              <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              
+              <button className="px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200">
                 Insert
               </button>
-              <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              
+              <button className="px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200">
                 Design
               </button>
+              
               <button 
                 onClick={() => setActivePanel(activePanel === 'animations' ? null : 'animations')}
-                className={`text-sm hover:text-gray-800 dark:hover:text-white ${
-                  activePanel === 'animations' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'
+                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  activePanel === 'animations' 
+                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300' 
+                    : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                 }`}
               >
                 Animations
               </button>
+              
               <button 
                 onClick={() => setIsSlideshow(true)}
-                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200"
               >
                 Slideshow
               </button>
+              
               <button 
                 onClick={() => setShowPresenterMode(true)}
-                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="px-3 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200"
               >
                 Presenter
               </button>
+              
               <button 
                 onClick={() => setShowAIAssistant(true)}
-                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="px-3 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900 rounded-lg transition-all duration-200 flex items-center gap-2"
               >
-                🤖 AI
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                AI Assistant
               </button>
             </nav>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setShowCloudSync(true)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              title="Cloud Sync"
-            >
-              ☁️
-            </button>
-            <button
-              onClick={() => setShowAdvancedExport(true)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              title="Advanced Export"
-            >
-              🚀
-            </button>
-            <button
-              onClick={() => setShowInteractiveElements(true)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              title="Interactive Elements"
-            >
-              ⚡
-            </button>
-            <button
-              onClick={() => setShowVersionHistory(true)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              title="Version History"
-            >
-              📚
-            </button>
-            <button
-              onClick={() => setShowSearchPresentations(true)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              title="Search Presentations (Ctrl+F)"
-            >
-              🔍
-            </button>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-              title="Toggle Theme"
-            >
-              {isDark ? '☀️' : '🌙'}
-            </button>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                Welcome, {user?.email || 'User'}
-              </span>
+          {/* Right Side Actions */}
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
+              <button
+                onClick={() => setShowCloudSync(true)}
+                className="p-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-all duration-200"
+                title="Cloud Sync"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={() => setShowAdvancedExport(true)}
+                className="p-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-all duration-200"
+                title="Advanced Export"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={() => setShowSearchPresentations(true)}
+                className="p-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-all duration-200"
+                title="Search Presentations (Ctrl+F)"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-all duration-200"
+                title="Toggle Theme"
+              >
+                {isDark ? (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            
+            <div className="h-6 w-px bg-neutral-300 dark:bg-neutral-700 mx-2"></div>
+            
+            {/* User Menu */}
+            <div className="flex items-center space-x-3">
+              <div className="text-right">
+                <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                  {user?.name || 'User'}
+                </div>
+                <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                  {user?.email || 'user@example.com'}
+                </div>
+              </div>
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                {(user?.name || 'U').charAt(0).toUpperCase()}
+              </div>
               <button
                 onClick={logout}
-                className="text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                className="p-2 text-neutral-500 hover:text-red-600 dark:text-neutral-400 dark:hover:text-red-400 transition-colors duration-200"
+                title="Logout"
               >
-                Logout
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
               </button>
             </div>
           </div>
@@ -256,19 +310,27 @@ const Dashboard = () => {
       {/* Speaker Notes */}
       <SpeakerNotes />
 
-      {/* Status Bar */}
-      <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 py-2">
-        <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-          <div className="flex items-center space-x-4">
-            <span>Ready</span>
-            <span>•</span>
+      {/* Modern Status Bar */}
+      <div className="status-bar">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse-soft"></div>
+            <span className="font-medium">Ready</span>
+          </div>
+          <div className="w-px h-4 bg-neutral-300 dark:bg-neutral-700"></div>
+          <div className="flex items-center space-x-2">
+            <svg className="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             <span>Auto-save: On</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <span>Zoom: 100%</span>
-            <span>•</span>
-            <span>View: Normal</span>
-          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span>Zoom: 100%</span>
+          <div className="w-px h-4 bg-neutral-300 dark:bg-neutral-700"></div>
+          <span>View: Normal</span>
+          <div className="w-px h-4 bg-neutral-300 dark:bg-neutral-700"></div>
+          <span>Slide {currentSlide + 1} of {slides.length}</span>
         </div>
       </div>
 

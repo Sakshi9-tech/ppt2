@@ -116,125 +116,180 @@ const SlideEditor = () => {
   };
 
   return (
-    <div className="flex-1 bg-gray-50 dark:bg-gray-900 p-4">
-      {/* Formatting Toolbar */}
-      <div className="mb-4 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border">
-        <div className="flex items-center space-x-2 flex-wrap">
-          <button
-            onClick={() => formatText('bold')}
-            className="px-2 py-1 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded"
-            title="Bold (Ctrl+B)"
-          >
-            <strong>B</strong>
-          </button>
-          <button
-            onClick={() => formatText('italic')}
-            className="px-2 py-1 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded"
-            title="Italic (Ctrl+I)"
-          >
-            <em>I</em>
-          </button>
-          <button
-            onClick={() => formatText('underline')}
-            className="px-2 py-1 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded"
-            title="Underline (Ctrl+U)"
-          >
-            <u>U</u>
-          </button>
-          <div className="border-l border-gray-300 h-6 mx-2"></div>
-          <select
-            onChange={(e) => formatText('fontSize', e.target.value)}
-            className="px-2 py-1 text-sm border rounded dark:bg-gray-700 dark:border-gray-600"
-          >
-            <option value="12">12px</option>
-            <option value="14">14px</option>
-            <option value="16" selected>16px</option>
-            <option value="18">18px</option>
-            <option value="24">24px</option>
-            <option value="32">32px</option>
-            <option value="48">48px</option>
-          </select>
-          <input
-            type="color"
-            onChange={(e) => formatText('foreColor', e.target.value)}
-            className="w-8 h-8 border rounded cursor-pointer"
-            title="Text Color"
-          />
-          <div className="border-l border-gray-300 h-6 mx-2"></div>
-          <button
-            onClick={addTextBox}
-            className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            + Text Box
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-            id="image-upload"
-          />
-          <label
-            htmlFor="image-upload"
-            className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer"
-          >
-            📷 Image
-          </label>
-          <button
-            onClick={() => setShowChartModal(true)}
-            className="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700"
-          >
-            📊 Chart
-          </button>
-          <button
-            onClick={() => setShowTableModal(true)}
-            className="px-3 py-1 text-sm bg-orange-600 text-white rounded hover:bg-orange-700"
-          >
-            📋 Table
-          </button>
+    <div className="flex-1 p-6">
+      {/* Modern Formatting Toolbar - now uses themed panel styles */}
+      <div className="mb-6 panel">
+        <div className="p-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Text Formatting Group */}
+            <div className="flex items-center gap-1 px-3 py-1 rounded-lg">
+              <button
+                onClick={() => formatText('bold')}
+                className="toolbar-btn"
+                title="Bold (Ctrl+B)"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/>
+                </svg>
+              </button>
+              <button
+                onClick={() => formatText('italic')}
+                className="toolbar-btn"
+                title="Italic (Ctrl+I)"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4h-8z"/>
+                </svg>
+              </button>
+              <button
+                onClick={() => formatText('underline')}
+                className="toolbar-btn"
+                title="Underline (Ctrl+U)"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="w-px h-8 bg-neutral-300 dark:bg-neutral-700"></div>
+            
+            {/* Font Size and Color */}
+            <div className="flex items-center gap-2">
+              <select
+                onChange={(e) => formatText('fontSize', e.target.value)}
+                className="form-select text-sm min-w-20"
+                defaultValue="16"
+              >
+                <option value="12">12px</option>
+                <option value="14">14px</option>
+                <option value="16">16px</option>
+                <option value="18">18px</option>
+                <option value="24">24px</option>
+                <option value="32">32px</option>
+                <option value="48">48px</option>
+              </select>
+              
+              <div className="relative">
+                <input
+                  type="color"
+                  onChange={(e) => formatText('foreColor', e.target.value)}
+                  className="w-10 h-10 rounded-lg cursor-pointer form-input"
+                  title="Text Color"
+                />
+              </div>
+            </div>
+            
+            <div className="w-px h-8 bg-neutral-300 dark:bg-neutral-700"></div>
+            
+            {/* Insert Elements */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={addTextBox}
+                className="btn-secondary flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
+                Text Box
+              </button>
+              
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                id="image-upload"
+              />
+              <label
+                htmlFor="image-upload"
+                className="btn-secondary flex items-center gap-2 cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Image
+              </label>
+              
+              <button
+                onClick={() => setShowChartModal(true)}
+                className="btn-secondary flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Chart
+              </button>
+              
+              <button
+                onClick={() => setShowTableModal(true)}
+                className="btn-secondary flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0V4a1 1 0 011-1h16a1 1 0 011 1v16a1 1 0 01-1 1H5a1 1 0 01-1-1z" />
+                </svg>
+                Table
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Slide Canvas */}
+      {/* Modern Slide Canvas */}
       <div className="flex justify-center">
-        <div 
-          className="slide-canvas relative bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden"
-          style={{ width: '800px', height: '600px', backgroundColor: slide.background || '#ffffff' }}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
-          {/* Title Area */}
-          <div
-            ref={titleRef}
-            contentEditable
-            suppressContentEditableWarning={true}
-            onBlur={handleTitleEdit}
-            onFocus={() => setIsEditing(true)}
-            className="absolute top-8 left-8 right-8 text-3xl font-bold text-center outline-none min-h-[50px] p-2 rounded border-2 border-transparent hover:border-blue-300 focus:border-blue-500"
-            style={{ color: slide.textColor || '#000000' }}
-            dangerouslySetInnerHTML={{ __html: slide.title || 'Click to add title' }}
-          />
-
-          {/* Content Area */}
-          <div
-            ref={contentRef}
-            contentEditable
-            suppressContentEditableWarning={true}
-            onBlur={handleContentEdit}
-            onFocus={() => setIsEditing(true)}
-            className="absolute top-24 left-8 right-8 bottom-8 text-lg outline-none p-4 rounded border-2 border-transparent hover:border-blue-300 focus:border-blue-500"
-            style={{ color: slide.textColor || '#000000' }}
-            dangerouslySetInnerHTML={{ __html: slide.content || 'Click to add content' }}
-          />
-
-          {/* Dynamic Elements */}
-          {(slide.elements || []).map((element) => (
+        <div className="relative">
+          {/* Canvas Container with Modern Shadow */}
+          <div 
+            className="slide-canvas relative overflow-hidden"
+            style={{ 
+              width: '900px', 
+              height: '675px', 
+              backgroundColor: slide.background || '#ffffff',
+              aspectRatio: '16/12'
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+          >
+            {/* Subtle Grid Pattern */}
+            <div className="absolute inset-0 opacity-5 dark:opacity-10" style={{
+              backgroundImage: `
+                linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)
+              `,
+              backgroundSize: '20px 20px'
+            }}></div>
+            {/* Modern Title Area */}
             <div
-              key={element.id}
-              className={`absolute cursor-move border-2 ${
-                selectedElement === element.id ? 'border-blue-500' : 'border-transparent hover:border-blue-300'
-              }`}
+              ref={titleRef}
+              contentEditable
+              suppressContentEditableWarning={true}
+              onBlur={handleTitleEdit}
+              onFocus={() => setIsEditing(true)}
+              className="absolute top-12 left-12 right-12 text-4xl font-bold text-center outline-none min-h-[60px] p-4 rounded-xl transition-all duration-200 bg-transparent"
+              style={{ color: slide.textColor || '#1f2937' }}
+              dangerouslySetInnerHTML={{ __html: slide.title || '<span style="color:rgba(255,255,255,0.45)">Click to add title</span>' }}
+            />
+
+            {/* Modern Content Area */}
+            <div
+              ref={contentRef}
+              contentEditable
+              suppressContentEditableWarning={true}
+              onBlur={handleContentEdit}
+              onFocus={() => setIsEditing(true)}
+              className="absolute top-32 left-12 right-12 bottom-12 text-lg outline-none p-6 rounded-xl transition-all duration-200 bg-transparent"
+              style={{ color: slide.textColor || '#374151' }}
+              dangerouslySetInnerHTML={{ __html: slide.content || '<span style="color:rgba(255,255,255,0.45)">Click to add content</span>' }}
+            />
+
+            {/* Modern Dynamic Elements */}
+            {(slide.elements || []).map((element) => (
+              <div
+                key={element.id}
+                className={`slide-element ${
+                  selectedElement === element.id ? 'selected' : ''
+                }`}
               style={{
                 left: element.x,
                 top: element.y,
@@ -334,61 +389,123 @@ const SlideEditor = () => {
                 </div>
               )}
               
-              {selectedElement === element.id && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteElement(element.id);
-                  }}
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-          ))}
+                {selectedElement === element.id && (
+                  <>
+                    {/* Modern Delete Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteElement(element.id);
+                      }}
+                      className="absolute -top-3 -right-3 w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    
+                    {/* Resize Handles */}
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary-500 rounded-full cursor-se-resize"></div>
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full cursor-ne-resize"></div>
+                    <div className="absolute -top-1 -left-1 w-3 h-3 bg-primary-500 rounded-full cursor-nw-resize"></div>
+                    <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-primary-500 rounded-full cursor-sw-resize"></div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          {/* Canvas Info */}
+          <div className="absolute -bottom-8 left-0 text-xs text-neutral-500 dark:text-neutral-400">
+            16:12 Aspect Ratio • 900×675px
+          </div>
         </div>
       </div>
 
-      {/* Element Properties Panel */}
+      {/* Modern Element Properties Panel */}
       {selectedElement && (
-        <div className="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border">
-          <h4 className="text-sm font-medium mb-2">Element Properties</h4>
-          <div className="grid grid-cols-4 gap-2">
-            <input
-              type="number"
-              placeholder="Font Size"
-              onChange={(e) => updateElement(selectedElement, { fontSize: parseInt(e.target.value) })}
-              className="px-2 py-1 text-sm border rounded dark:bg-gray-700 dark:border-gray-600"
-            />
-            <select
-              onChange={(e) => updateElement(selectedElement, { fontFamily: e.target.value })}
-              className="px-2 py-1 text-sm border rounded dark:bg-gray-700 dark:border-gray-600"
+        <div className="mt-6 panel animate-fade-in">
+          <div className="panel-header">
+            <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Element Properties</h4>
+            <button
+              onClick={() => setSelectedElement(null)}
+              className="p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded transition-colors duration-200"
             >
-              <option value="Arial">Arial</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Georgia">Georgia</option>
-            </select>
-            <input
-              type="color"
-              onChange={(e) => updateElement(selectedElement, { color: e.target.value })}
-              className="w-full h-8 border rounded cursor-pointer"
-              title="Text Color"
-            />
-            <input
-              type="color"
-              onChange={(e) => updateElement(selectedElement, { backgroundColor: e.target.value })}
-              className="w-full h-8 border rounded cursor-pointer"
-              title="Background Color"
-            />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Font Size</label>
+              <input
+                type="number"
+                placeholder="Font Size"
+                onChange={(e) => updateElement(selectedElement, { fontSize: parseInt(e.target.value) })}
+                className="form-input"
+                min="8"
+                max="72"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Font Family</label>
+              <select
+                onChange={(e) => updateElement(selectedElement, { fontFamily: e.target.value })}
+                className="form-select"
+              >
+                <option value="Inter">Inter</option>
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Georgia">Georgia</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Text Color</label>
+              <div className="relative">
+                <input
+                  type="color"
+                  onChange={(e) => updateElement(selectedElement, { color: e.target.value })}
+                  className="w-full h-10 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg cursor-pointer"
+                  title="Text Color"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Background</label>
+              <div className="relative">
+                <input
+                  type="color"
+                  onChange={(e) => updateElement(selectedElement, { backgroundColor: e.target.value })}
+                  className="w-full h-10 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg cursor-pointer"
+                  title="Background Color"
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
       
-      {/* Modals */}
-      {showChartModal && <ChartComponent onClose={() => setShowChartModal(false)} />}
-      {showTableModal && <TableComponent onClose={() => setShowTableModal(false)} />}
+      {/* Modern Modals */}
+      {showChartModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
+          <div className="animate-zoom-in">
+            <ChartComponent onClose={() => setShowChartModal(false)} />
+          </div>
+        </div>
+      )}
+      {showTableModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
+          <div className="animate-zoom-in">
+            <TableComponent onClose={() => setShowTableModal(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

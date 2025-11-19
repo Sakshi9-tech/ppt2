@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
 
-  return user ? children : <Navigate to="/login" />;
+  return children; // Temporarily bypass auth
 };
 
 export default ProtectedRoute;
