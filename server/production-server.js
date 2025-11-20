@@ -9,6 +9,12 @@ import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
+// Validate required environment variables
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️ JWT_SECRET not set, using fallback (not secure for production)');
+  process.env.JWT_SECRET = 'fallback-jwt-secret-change-in-production';
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

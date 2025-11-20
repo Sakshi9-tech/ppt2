@@ -14,6 +14,10 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    if (!process.env.MONGODB_URI) {
+      return res.status(503).json({ message: 'Database not configured. Please use production server.' });
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -46,6 +50,10 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (!process.env.MONGODB_URI) {
+      return res.status(503).json({ message: 'Database not configured. Please use production server.' });
+    }
 
     // Find user by email
     const user = await User.findOne({ email });

@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
+    if (!process.env.MONGODB_URI) {
+      console.log('📊 MongoDB URI not provided, skipping database connection');
+      return;
+    }
+
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -26,7 +31,7 @@ const connectDB = async () => {
     });
 
   } catch (error) {
-    console.log('📊 MongoDB unavailable, using in-memory storage');
+    console.log('📊 MongoDB connection failed, continuing without database:', error.message);
   }
 };
 

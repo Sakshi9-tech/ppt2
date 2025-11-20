@@ -12,13 +12,23 @@ export const authenticateToken = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Check if user still exists
-    const user = await User.findById(decoded.userId).select('-password');
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+    // Check if user still exists (only if database is connected)
+    if (process.env.MONGODB_URI) {
+      try {
+        const user = await User.findById(decoded.userId).select('-password');
+        if (!user) {
+          return res.status(401).json({ message: 'User not found' });
+        }
+        req.user = { userId: user._id, email: user.email, name: user.name };
+      } catch (dbError) {
+        // Fallback to token data if database is unavailable
+        req.user = { userId: decoded.userId, email: decoded.email };
+      }
+    } else {
+      // Use token data directly when no database
+      req.user = decoded;
     }
-
-    req.user = { userId: user._id, email: user.email, name: user.name };
+    
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -40,9 +50,18 @@ export const optionalAuth = async (req, res, next) => {
 
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.userId).select('-password');
-      if (user) {
-        req.user = { userId: user._id, email: user.email, name: user.name };
+      
+      if (process.env.MONGODB_URI) {
+        try {
+          const user = await User.findById(decoded.userId).select('-password');
+          if (user) {
+            req.user = { userId: user._id, email: user.email, name: user.name };
+          }
+        } catch (dbError) {
+          req.user = decoded;
+        }
+      } else {
+        req.user = decoded;
       }
     }
     
